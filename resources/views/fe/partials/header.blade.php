@@ -17,7 +17,7 @@
                             </div>
                             <!-- Header Logo -->
                             <div class="header-logo col-md-4 col-12">
-                                <a class="logo" href="index.html">
+                                <a class="logo" href="{{ route('fe.index') }}">
                                     <img alt="logo" src="{{ asset('fe/img/logo.png') }}"/>
                                 </a>
                             </div>
@@ -26,10 +26,15 @@
                                 <ul>
                                     @if(session('user_id'))
                                         <li><a href="{{ route('fe.my_account') }}">My Account</a></li>
-                                        <li><a href="wishlist.html">Wishlist</a></li>
-                                        <li><a href="{{ route('login') }}"><form action="{{ route('logout') }}" method="POST" style="display:inline;">Logout
+                                        <li class="{{ Request::routeIs('fe.wishlist') ? 'active' : '' }}">
+                                            <a href="{{ route('fe.wishlist') }}">Wishlist</a>
+                                        </li>
+                                        <li>
+                                            <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                                                 @csrf
-                                            </form></a></li>
+                                                <button type="submit" style="background:none;border:none;padding:0;margin:0;color:inherit;cursor:pointer;">Logout</button>
+                                            </form>
+                                        </li>
                                         <li>
                                             
                                         </li>
@@ -77,15 +82,13 @@
                                                 </div>
                                                 <!-- Cart Button -->
                                                 <div class="cart-bottom clearfix">
-                                                    <a href="checkout.html">Check out</a>
+                                                    <a href="{{route('fe.checkout')}}">Check out</a>
                                                 </div>
                                             </div>
                                         </li>
                                     @else
-                                        <!-- Hanya tampil jika belum login -->
                                         <li><a href="{{ route('login') }}">Login</a></li>
                                         <li><a href="{{ route('register') }}">Register</a></li>
-                                        <!-- Tidak tampilkan keranjang jika belum login -->
                                     @endif
                                 </ul>
                             </div>

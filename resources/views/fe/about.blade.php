@@ -15,7 +15,7 @@
                     <div class="row">
                         <!-- Page Title Start -->
                         <div class="page-title text-center col">
-                            <h1>About us</h1>
+                            <h1>Tentang Kami</h1>
                         </div><!-- Page Title End -->
                     </div>
                 </div>

@@ -7,9 +7,6 @@
     <body>
         <!-- Main Wrapper Start -->
         <div class="section" id="main-wrapper">
-            <!-- Header Section Start -->
-            <!-- Header Section End -->
-
             <!-- Hero Slider Start-->
             <div class="hero-slider section fix">
                 <!-- Hero Slide Item Start-->

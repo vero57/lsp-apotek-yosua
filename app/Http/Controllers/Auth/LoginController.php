@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -13,17 +15,28 @@ class LoginController extends Controller
         return view('fe.auth.login');
     }
 
-    // Proses login (dummy)
+    // Proses login
     public function login(Request $request)
     {
-        // Validasi sederhana
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required',
+            'password' => 'required'
         ]);
 
-        // Dummy login: langsung redirect ke home
-        // Implementasi login asli menggunakan Auth::attempt()
-        return redirect()->route('fe.index');
+        $user = DB::table('pelanggan')->where('email', $request->email)->first();
+
+        if ($user && Hash::check($request->password, $user->katakunci)) {
+            // Simpan session login sederhana (untuk debug, bukan production)
+            session([
+                'user_id' => $user->id,
+                'user_email' => $user->email,
+                'user_name' => $user->nama_pelanggan,
+            ]);
+            return redirect()->route('fe.index');
+        } else {
+            return redirect()->route('login')->withInput()->withErrors([
+                'email' => 'Email or password is incorrect.',
+            ]);
+        }
     }
 }

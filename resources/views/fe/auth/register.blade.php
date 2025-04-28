@@ -30,13 +30,18 @@
                 @endif
                 <!-- Nama -->
                 <div class="form-group mb-3">
-                    <label for="name" class="fw-semibold">Full Name</label>
+                    <label for="name" class="fw-semibold">Nama Lengkap</label>
                     <input type="text" class="form-control" id="name" name="name" required autofocus value="{{ old('name') }}">
                 </div>
                 <!-- Email -->
                 <div class="form-group mb-3">
-                    <label for="email" class="fw-semibold">Email address</label>
+                    <label for="email" class="fw-semibold">Email</label>
                     <input type="email" class="form-control" id="email" name="email" required value="{{ old('email') }}">
+                </div>
+                <!-- No Telpon -->
+                <div class="form-group mb-3">
+                    <label for="no_telp" class="fw-semibold">No Telpon</label>
+                    <input type="text" class="form-control" id="no_telp" name="no_telp" required value="{{ old('no_telp') }}" placeholder="081-xxxx-xxxx">
                 </div>
                 <!-- Password -->
                 <div class="form-group mb-3">
@@ -45,7 +50,7 @@
                 </div>
                 <!-- Konfirmasi Password -->
                 <div class="form-group mb-3">
-                    <label for="password_confirmation" class="fw-semibold">Confirm Password</label>
+                    <label for="password_confirmation" class="fw-semibold">Konfirmasi Password</label>
                     <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
                 </div>
                 <button type="submit" class="btn btn-primary w-100 mb-2">Register</button>
