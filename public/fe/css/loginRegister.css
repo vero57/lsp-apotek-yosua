@@ -1,0 +1,63 @@
+body {
+    background: #f8f9fa;
+}
+
+.container {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    padding: 32px 24px 24px 24px;
+}
+
+h2 {
+    font-weight: 700;
+    color: #333;
+}
+
+.btn-primary {
+    background: #51bd99;
+    border: none;
+}
+
+.btn-primary:hover {
+    background: #419e7d;
+}
+
+/* Tambahan untuk auth layout */
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
+}
+.auth-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+    overflow: hidden;
+    display: flex;
+    min-width: 700px;
+    max-width: 900px;
+}
+.auth-form-side {
+    flex: 1 1 0;
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.auth-image-side {
+    flex: 1 1 0;
+    background: #f3f6f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 300px;
+}
+@media (max-width: 900px) {
+    .auth-card { flex-direction: column; min-width: 340px; }
+    .auth-image-side { min-height: 200px; }
+}
+
+
