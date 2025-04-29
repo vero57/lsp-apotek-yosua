@@ -16,7 +16,10 @@
     @endif
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="h5 mb-0">Product List</h2>
-        <a href="{{ route('be.admin.products.create') }}" class="btn btn-primary">Add Product</a>
+        <div>
+            <a href="#" class="btn btn-primary mr-2">Add Jenis Obat</a>
+            <a href="{{ route('be.admin.products.create') }}" class="btn btn-primary">Add Product</a>
+        </div>
     </div>
     <div class="table-responsive">
         <table class="table table-bordered table-hover mb-0">
