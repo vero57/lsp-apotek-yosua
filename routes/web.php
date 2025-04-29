@@ -61,5 +61,6 @@ Route::delete('/admin/users/{user}', [\App\Http\Controllers\UserbeController::cl
 Route::get('/admin/products', [\App\Http\Controllers\ProductController::class, 'index'])->name('be.admin.products');
 Route::get('/admin/products/create', [\App\Http\Controllers\AddObatController::class, 'create'])->name('be.admin.products.create');
 Route::post('/admin/products', [\App\Http\Controllers\AddObatController::class, 'store'])->name('be.admin.products.store');
+Route::get('/admin/products/create-jenis', [\App\Http\Controllers\AddJenisObat::class, 'create'])->name('be.admin.products.createjenis');
 
 
