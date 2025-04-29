@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    @include('partials.head')
+    @include('be.partials.head')
 </head>
 <body>
-    @include('partials.header')
-    <div class="d-flex align-items-stretch">
-        @include('partials.sidebar')
-        <div class="page-content">
+    <div class="main-wrapper">
+        @include('be.partials.header')
+        @include('be.partials.sidebar')
+
+        <div class="page-wrapper">
             @yield('content')
-            @include('partials.footer')
         </div>
     </div>
-    @include('partials.scripts')
+
+    @include('be.partials.footer')
 </body>
 </html>

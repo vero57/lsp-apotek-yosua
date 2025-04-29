@@ -11,11 +11,8 @@ use App\Http\Controllers\{
     ShopController,     
     WishlistController,
     MyAccountController,
-    // ChartsController,
-    // DashboardController,
-    // Auth\AuthController,
-    // FormsController,
-    // TablesController,
+    AdminController,
+    UserbeController
 };
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -54,5 +51,15 @@ Route::post('/logout', function (Request $request) {
 
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
+
+Route::get('/admin', [AdminController::class, 'index'])->name('be.admin.index');
+Route::get('/admin/users', [UserbeController::class, 'index'])->name('be.admin.users');
+Route::get('/admin/users/create', [\App\Http\Controllers\AddusersController::class, 'create'])->name('be.admin.users.create');
+Route::post('/admin/users', [\App\Http\Controllers\AddusersController::class, 'store'])->name('be.admin.users.store');
+Route::delete('/admin/users/{user}', [\App\Http\Controllers\UserbeController::class, 'destroy'])->name('be.admin.users.destroy');
+
+Route::get('/admin/products', [\App\Http\Controllers\ProductController::class, 'index'])->name('be.admin.products');
+Route::get('/admin/products/create', [\App\Http\Controllers\AddObatController::class, 'create'])->name('be.admin.products.create');
+Route::post('/admin/products', [\App\Http\Controllers\AddObatController::class, 'store'])->name('be.admin.products.store');
 
 

@@ -1,8 +1,9 @@
-<footer class="footer">
-          <div class="footer__block block no-margin-bottom">
-            <div class="container-fluid text-center">
-              <!-- Please do not remove the backlink to us unless you support us at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
-               <p class="no-margin-bottom">2018 &copy; Your company. Download From <a target="_blank" href="https://templateshub.net">Templates Hub</a>.</p>
-            </div>
-          </div>
-</footer>
+<div class="sidebar-overlay" data-reff=""></div>
+
+<script src="{{ asset('be/js/jquery-3.2.1.min.js') }}"></script>
+<script src="{{ asset('be/js/popper.min.js') }}"></script>
+<script src="{{ asset('be/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('be/js/jquery.slimscroll.js') }}"></script>
+<script src="{{ asset('be/js/Chart.bundle.js') }}"></script>
+<script src="{{ asset('be/js/chart.js') }}"></script>
+<script src="{{ asset('be/js/app.js') }}"></script>
