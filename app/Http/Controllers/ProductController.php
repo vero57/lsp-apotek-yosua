@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\JenisObat;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        // Nanti ambil data produk dari database, untuk sekarang tampilkan view saja
-        return view('be.pages.product');
+        $products = Product::with('jenisObat')->get();
+        $jenisObat = JenisObat::all();
+        return view('be.pages.product', compact('products', 'jenisObat'));
     }
 
     public function decreaseStock($id, $qty)
@@ -22,5 +24,12 @@ class ProductController extends Controller
         $product->stok -= $qty;
         $product->save();
         return back()->with('success', 'Stok berhasil dikurangi');
+    }
+
+    public function destroy($id)
+    {
+        $product = Product::findOrFail($id);
+        $product->delete();
+        return redirect()->route('be.admin.products')->with('success', 'Produk berhasil dihapus');
     }
 }

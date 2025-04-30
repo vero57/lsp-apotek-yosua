@@ -13,12 +13,9 @@
             <label for="idjenis">Jenis Obat</label>
             <select class="form-control w-100" id="idjenis" name="idjenis" required>
                 <option value="">-- Pilih Jenis Obat --</option>
-                <option value="1">Tablet</option>
-                <option value="2">Kapsul</option>
-                <option value="3">Sirup</option>
-                <option value="4">Salep</option>
-                <option value="5">Injeksi</option>
-                <!-- Tambahkan jenis lain sesuai kebutuhan -->
+                @foreach($jenisObat as $jenis)
+                    <option value="{{ $jenis->id }}">{{ $jenis->jenis }}</option>
+                @endforeach
             </select>
         </div>
         <div class="form-group mb-3">

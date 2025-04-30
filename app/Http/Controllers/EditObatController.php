@@ -6,19 +6,22 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\JenisObat;
 
-class AddObatController extends Controller
+class EditObatController extends Controller
 {
-    public function create()
+    public function edit($id)
     {
+        $product = Product::findOrFail($id);
         $jenisObat = JenisObat::all();
-        return view('be.pages.addobat', compact('jenisObat'));
+        return view('be.pages.editobat', compact('product', 'jenisObat'));
     }
 
-    public function store(Request $request)
+    public function update(Request $request, $id)
     {
+        $product = Product::findOrFail($id);
+
         $request->validate([
             'nama_obat'      => 'required|string|max:255',
-            'idjenis'        => 'nullable', // boleh kosong
+            'idjenis'        => 'required|exists:jenis_obat,id',
             'harga_jual'     => 'required|numeric|min:0',
             'deskripsi_obat' => 'required|string',
             'stok'           => 'required|integer|min:0',
@@ -41,14 +44,8 @@ class AddObatController extends Controller
             }
         }
 
-        Product::create($data);
+        $product->update($data);
 
-        return redirect()->route('be.admin.products')->with('success', 'Obat berhasil ditambahkan!');
-    }
-    public function destroy($id)
-    {
-        $obats = Obat::findOrFail($id);
-        $obats->delete();
-        return redirect()->route('be.admin.products')->with('success', 'Obat berhasil dihapus!');
+        return redirect()->route('be.admin.products')->with('success', 'Obat berhasil diupdate!');
     }
 }

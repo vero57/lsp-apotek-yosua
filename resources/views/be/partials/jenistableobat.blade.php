@@ -9,28 +9,73 @@
                 <th>Image</th>
                 <th>Created At</th>
                 <th>Updated At</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            {{-- Contoh data statis --}}
+            @forelse($jenisObat as $jenis)
             <tr>
-                <td>1</td>
-                <td>1</td>
-                <td>Tablet</td>
-                <td>Obat berbentuk tablet, mudah dikonsumsi.</td>
-                <td><img src="https://via.placeholder.com/40" alt="image"></td>
-                <td>2024-06-01 10:00:00</td>
-                <td>2024-06-02 12:00:00</td>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $jenis->id }}</td>
+                <td>{{ $jenis->jenis }}</td>
+                <td>{{ $jenis->deskripsi_jenis }}</td>
+                <td>
+                    @if($jenis->image_url)
+                        <img src="{{ asset('storage/' . $jenis->image_url) }}" alt="image" width="40">
+                    @else
+                        <span class="text-muted">-</span>
+                    @endif
+                </td>
+                <td>{{ $jenis->created_at }}</td>
+                <td>{{ $jenis->updated_at }}</td>
+                <td>
+                    <a href="#" class="btn btn-sm btn-warning">Edit</a>
+                    <form action="{{ route('be.admin.products.destroyjenis', $jenis->id) }}" method="POST" class="d-inline delete-jenis-form">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn btn-sm btn-danger btn-delete-jenis">Delete</button>
+                    </form>
+                </td>
             </tr>
+            @empty
             <tr>
-                <td>2</td>
-                <td>2</td>
-                <td>Sirup</td>
-                <td>Obat cair, biasanya untuk anak-anak.</td>
-                <td><img src="https://via.placeholder.com/40" alt="image"></td>
-                <td>2024-06-03 09:30:00</td>
-                <td>2024-06-04 11:00:00</td>
+                <td colspan="8" class="text-center">Belum ada jenis obat.</td>
             </tr>
+            @endforelse
         </tbody>
     </table>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.btn-delete-jenis').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Hapus Jenis Obat?',
+                text: 'Apakah anda yakin ingin menghapus jenis obat ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Tidak',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    btn.closest('form').submit();
+                }
+            });
+        });
+    });
+});
+</script>
+@if(session('success_jenis'))
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil',
+        text: '{{ session('success_jenis') }}',
+        showConfirmButton: false,
+        timer: 1800
+    });
+</script>
+@endif

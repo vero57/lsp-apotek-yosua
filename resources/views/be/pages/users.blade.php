@@ -22,6 +22,7 @@
         <table class="table table-bordered table-hover mb-0">
             <thead class="thead-light">
                 <tr>
+                    <th>No</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Email Verified At</th>
@@ -34,6 +35,7 @@
             <tbody>
                 @forelse($users as $user)
                 <tr>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->email_verified_at }}</td>
@@ -41,7 +43,7 @@
                     <td>{{ $user->created_at }}</td>
                     <td>{{ $user->updated_at }}</td>
                     <td>
-                        <a href="" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{{ route('be.admin.users.edit', $user->id) }}" class="btn btn-sm btn-warning">Edit</a>
                         <form action="{{ route('be.admin.users.destroy', $user->id) }}" method="POST" class="d-inline delete-user-form">
                             @csrf
                             @method('DELETE')
@@ -51,7 +53,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" class="text-center">Belum ada user.</td>
+                    <td colspan="8" class="text-center">Belum ada user.</td>
                 </tr>
                 @endforelse
             </tbody>

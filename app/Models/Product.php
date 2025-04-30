@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $table = 'obat'; // atau nama tabel sesuai database Anda
+    protected $table = 'obat';
+
     protected $fillable = [
         'nama_obat',
         'idjenis',
@@ -17,5 +18,11 @@ class Product extends Model
         'foto3',
         'stok',
     ];
+
+    public $timestamps = true;
+
+    public function jenisObat()
+    {
+        return $this->belongsTo(JenisObat::class, 'idjenis', 'id');
+    }
 }
-    
