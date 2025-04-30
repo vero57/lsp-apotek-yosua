@@ -78,4 +78,7 @@ Route::post('/admin/products/store-jenis', [\App\Http\Controllers\AddJenisObat::
 Route::delete('/admin/products/jenis/{id}', [\App\Http\Controllers\AddJenisObat::class, 'destroy'])->name('be.admin.products.destroyjenis');
 Route::delete('/admin/products/{id}', [\App\Http\Controllers\ProductController::class, 'destroy'])->name('be.admin.products.destroy');
 
+// Route page pelanggan (BE)
+Route::get('/admin/pelanggan', [\App\Http\Controllers\PagePelangganController::class, 'index'])->name('be.admin.pelanggan');
+
 
