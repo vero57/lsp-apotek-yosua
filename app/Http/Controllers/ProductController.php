@@ -8,10 +8,21 @@ use App\Models\JenisObat;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('jenisObat')->get();
-        $jenisObat = JenisObat::all();
+        $productsQuery = \App\Models\Product::with('jenisObat');
+        $jenisObatQuery = \App\Models\JenisObat::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            // Filter produk berdasarkan nama_obat (case-insensitive)
+            $productsQuery->whereRaw('LOWER(nama_obat) LIKE ?', ['%' . strtolower($search) . '%']);
+            // Filter jenis obat berdasarkan jenis (case-insensitive)
+            $jenisObatQuery->whereRaw('LOWER(jenis) LIKE ?', ['%' . strtolower($search) . '%']);
+        }
+
+        $products = $productsQuery->get();
+        $jenisObat = $jenisObatQuery->get();
         return view('be.pages.product', compact('products', 'jenisObat'));
     }
 

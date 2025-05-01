@@ -20,7 +20,7 @@
         </div>
         <div class="form-group mb-3">
             <label for="harga_jual">Harga Jual</label>
-            <input type="number" class="form-control w-100" id="harga_jual" name="harga_jual" required>
+            <input type="text" class="form-control w-100" id="harga_jual" name="harga_jual" required>
         </div>
         <div class="form-group mb-3">
             <label for="deskripsi_obat">Deskripsi Obat</label>
@@ -46,4 +46,19 @@
         <a href="{{ route('be.admin.products') }}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const hargaInput = document.getElementById('harga_jual');
+    if (hargaInput) {
+        hargaInput.addEventListener('input', function(e) {
+            let value = this.value.replace(/\D/g, '');
+            if (value) {
+                this.value = parseInt(value).toLocaleString('id-ID');
+            } else {
+                this.value = '';
+            }
+        });
+    }
+});
+</script>
 @endsection

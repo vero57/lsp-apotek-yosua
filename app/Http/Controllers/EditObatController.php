@@ -18,6 +18,9 @@ class EditObatController extends Controller
     public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
+        $request->merge([
+            'harga_jual' => str_replace('.', '', $request->harga_jual)
+        ]);
 
         $request->validate([
             'nama_obat'      => 'required|string|max:255',

@@ -81,4 +81,7 @@ Route::delete('/admin/products/{id}', [\App\Http\Controllers\ProductController::
 // Route page pelanggan (BE)
 Route::get('/admin/pelanggan', [\App\Http\Controllers\PagePelangganController::class, 'index'])->name('be.admin.pelanggan');
 
+// Route page distributor (BE)
+Route::get('/admin/distributor', [\App\Http\Controllers\DistributorController::class, 'index'])->name('be.admin.distributor');
+
 

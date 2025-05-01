@@ -17,16 +17,27 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="d-flex align-items-center">
             <h2 id="table-title" class="h5 mb-0 mr-2">List Obat</h2>
-            <button type="button" id="switch-table-btn" class="btn btn-light p-2" title="Switch View" style="border-radius: 50%;">
+            <button type="button" id="switch-table-btn" class="btn btn-light p-2 ml-2" title="Switch View" style="border-radius: 50%;">
                 <i class="fa fa-exchange"></i>
             </button>
         </div>
-        <div>
+        <div class="d-flex align-items-center">
             <a href="{{ route('be.admin.products.createjenis') }}" class="btn btn-primary mr-2">Add Jenis Obat</a>
             <a href="{{ route('be.admin.products.create') }}" class="btn btn-primary">Add Obat</a>
+            <form method="GET" action="" class="form-inline ml-3" style="max-width: 250px;" id="search-form">
+                <div class="input-group w-100">
+                    <input type="text" id="search-input" name="search" class="form-control" placeholder="Cari obat..." value="{{ request('search') }}">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <input type="hidden" id="table-type" name="table" value="{{ request('table', 'product') }}">
+            </form>
         </div>
     </div>
-    <div id="product-table">
+    <div id="product-table" style="{{ request('table', 'product') == 'jenis' ? 'display:none;' : '' }}">
         <div class="table-responsive">
             <table class="table table-bordered table-hover mb-0">
                 <thead class="thead-light">
@@ -51,7 +62,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $product->nama_obat }}</td>
                         <td>{{ $product->jenisObat ? $product->jenisObat->jenis : '-' }}</td>
-                        <td>{{ $product->harga_jual }}</td>
+                        <td>{{ 'Rp. ' . number_format((int) $product->harga_jual, 0, ',', '.') }}</td>
                         <td>{{ $product->deskripsi_obat }}</td>
                         <td>
                             @if($product->foto1)
@@ -95,30 +106,47 @@
             </table>
         </div>
     </div>
-    <div id="jenis-table" style="display:none;">
+    <div id="jenis-table" style="{{ request('table', 'product') == 'jenis' ? '' : 'display:none;' }}">
         @include('be.partials.jenistableobat', ['jenisObat' => $jenisObat])
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    let showingProduct = true;
+    // Ambil status table dari query string
+    let showingProduct = "{{ request('table', 'product') }}" !== 'jenis';
     const switchBtn = document.getElementById('switch-table-btn');
     const tableTitle = document.getElementById('table-title');
     const productTable = document.getElementById('product-table');
     const jenisTable = document.getElementById('jenis-table');
+    const searchInput = document.getElementById('search-input');
+    const searchForm = document.getElementById('search-form');
+    const tableTypeInput = document.getElementById('table-type');
 
-    switchBtn.addEventListener('click', function () {
-        showingProduct = !showingProduct;
+    function setTableState(isProduct) {
+        showingProduct = isProduct;
         if (showingProduct) {
-            tableTitle.textContent = 'Product List';
+            tableTitle.textContent = 'List Obat';
             productTable.style.display = '';
             jenisTable.style.display = 'none';
+            if (searchInput) searchInput.placeholder = 'Cari obat...';
+            if (tableTypeInput) tableTypeInput.value = 'product';
         } else {
             tableTitle.textContent = 'Jenis Obat';
             productTable.style.display = 'none';
             jenisTable.style.display = '';
+            if (searchInput) searchInput.placeholder = 'Cari jenis obat';
+            if (tableTypeInput) tableTypeInput.value = 'jenis';
         }
+    }
+
+    setTableState(showingProduct);
+
+    switchBtn.addEventListener('click', function () {
+        setTableState(!showingProduct);
+        const url = new URL(window.location);
+        url.searchParams.set('table', showingProduct ? 'product' : 'jenis');
+        window.history.replaceState({}, '', url);
     });
 
     // Delete confirmation with SweetAlert

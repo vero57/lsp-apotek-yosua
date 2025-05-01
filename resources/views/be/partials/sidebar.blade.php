@@ -15,8 +15,8 @@
                         <li class="{{ request()->routeIs('be.admin.pelanggan') ? 'active' : '' }}">
                             <a href="{{ route('be.admin.pelanggan') }}"><i class="fa fa-user"></i> <span>Pelanggan</span></a>
                         </li>
-                        <li>
-                            <a href="schedule.html"><i class="fa fa-calendar-check-o"></i> <span>Doctor Schedule</span></a>
+                        <li class="{{ request()->routeIs('be.admin.distributor') ? 'active' : '' }}">
+                            <a href="{{ route('be.admin.distributor') }}"><i class="fa fa-calendar-check-o"></i> <span>Distributor</span></a>
                         </li>
                         <li>
                             <a href="departments.html"><i class="fa fa-hospital-o"></i> <span>Departments</span></a>

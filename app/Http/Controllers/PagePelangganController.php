@@ -7,9 +7,19 @@ use Illuminate\Support\Facades\DB;
 
 class PagePelangganController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $pelanggan = DB::table('pelanggan')->get();
+        $query = \DB::table('pelanggan');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nama_pelanggan', 'like', "%$search%")
+                  ->orWhere('email', 'like', "%$search%");
+            });
+        }
+
+        $pelanggan = $query->get();
         return view('be.pages.pelanggan', compact('pelanggan'));
     }
 }

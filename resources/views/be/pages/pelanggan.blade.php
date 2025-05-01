@@ -16,7 +16,16 @@
     @endif
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="h5 mb-0">Pelanggan List</h2>
-        {{-- Tambahkan tombol tambah pelanggan jika diperlukan --}}
+        <form method="GET" action="" class="form-inline" style="max-width: 300px;">
+            <div class="input-group w-100">
+                <input type="text" name="search" class="form-control" placeholder="Cari pelanggan..." value="{{ request('search') }}">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
     </div>
     <div class="table-responsive">
         <table class="table table-bordered table-hover mb-0">

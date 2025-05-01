@@ -16,6 +16,10 @@ class AddObatController extends Controller
 
     public function store(Request $request)
     {
+        $request->merge([
+            'harga_jual' => str_replace('.', '', $request->harga_jual)
+        ]);
+
         $request->validate([
             'nama_obat'      => 'required|string|max:255',
             'idjenis'        => 'nullable', // boleh kosong
@@ -45,6 +49,16 @@ class AddObatController extends Controller
 
         return redirect()->route('be.admin.products')->with('success', 'Obat berhasil ditambahkan!');
     }
+
+    public function update(Request $request, $id)
+    {
+        $request->merge([
+            'harga_jual' => str_replace('.', '', $request->harga_jual)
+        ]);
+
+        // validasi dan proses update
+    }
+
     public function destroy($id)
     {
         $obats = Obat::findOrFail($id);
