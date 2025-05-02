@@ -17,7 +17,7 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="h5 mb-0">Distributor List</h2>
         <div class="d-flex align-items-center">
-            <a href="" class="btn btn-primary">Add Distributor</a>
+            <a href="{{ route('be.admin.distributor.create') }}" class="btn btn-primary">Add Distributor</a>
             <form method="GET" action="" class="form-inline ml-3" style="max-width: 250px;">
                 <div class="input-group w-100">
                     <input type="text" name="search" class="form-control" placeholder="Cari distributor..." value="{{ request('search') }}">
@@ -36,7 +36,6 @@
                 <tr>
                     <th>No</th>
                     <th>Nama Distributor</th>
-                    <th>Email</th>
                     <th>No Telp</th>
                     <th>Alamat</th>
                     <th>Created At</th>
@@ -49,8 +48,7 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $distributor->nama_distributor }}</td>
-                    <td>{{ $distributor->email }}</td>
-                    <td>{{ $distributor->no_telp }}</td>
+                    <td>{{ $distributor->telepon }}</td>
                     <td>{{ $distributor->alamat }}</td>
                     <td>{{ $distributor->created_at }}</td>
                     <td>{{ $distributor->updated_at }}</td>

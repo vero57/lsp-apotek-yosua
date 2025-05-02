@@ -12,7 +12,11 @@ use App\Http\Controllers\{
     WishlistController,
     MyAccountController,
     AdminController,
-    UserbeController
+    UserbeController,
+    DistributorController,
+    AddDistributorController,
+    EditDistributorController,
+    
 };
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -82,6 +86,13 @@ Route::delete('/admin/products/{id}', [\App\Http\Controllers\ProductController::
 Route::get('/admin/pelanggan', [\App\Http\Controllers\PagePelangganController::class, 'index'])->name('be.admin.pelanggan');
 
 // Route page distributor (BE)
-Route::get('/admin/distributor', [\App\Http\Controllers\DistributorController::class, 'index'])->name('be.admin.distributor');
+Route::get('/admin/distributor', [DistributorController::class, 'index'])->name('be.admin.distributor');
+Route::delete('/admin/distributor/{id}', [DistributorController::class, 'destroy'])->name('be.admin.distributor.destroy');
+Route::get('/admin/distributor/create', [AddDistributorController::class, 'create'])->name('be.admin.distributor.create');
+Route::post('/admin/distributor', [AddDistributorController::class, 'store'])->name('be.admin.distributor.store');
+
+// Tambahkan route edit & update distributor
+Route::get('/admin/distributor/{id}/edit', [EditDistributorController::class, 'edit'])->name('be.admin.distributor.edit');
+Route::put('/admin/distributor/{id}', [EditDistributorController::class, 'update'])->name('be.admin.distributor.update');
 
 
