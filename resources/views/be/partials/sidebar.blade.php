@@ -16,10 +16,10 @@
                             <a href="{{ route('be.admin.pelanggan') }}"><i class="fa fa-user"></i> <span>Pelanggan</span></a>
                         </li>
                         <li class="{{ request()->routeIs('be.admin.distributor') ? 'active' : '' }}">
-                            <a href="{{ route('be.admin.distributor') }}"><i class="fa fa-calendar-check-o"></i> <span>Distributor</span></a>
+                            <a href="{{ route('be.admin.distributor') }}"><i class="fa fa-ambulance"></i> <span>Distributor</span></a>
                         </li>
-                        <li>
-                            <a href="departments.html"><i class="fa fa-hospital-o"></i> <span>Departments</span></a>
+                        <li class="{{ request()->routeIs('be.admin.pembelianobat') ? 'active' : '' }}">
+                            <a href="{{ route('be.admin.pembelianobat') }}"><i class="fa fa-hospital-o"></i> <span>Pembelian Obat</span></a>
                         </li>
 						<li class="submenu">
 							<a href="#"><i class="fa fa-user"></i> <span> Employees </span> <span class="menu-arrow"></span></a>

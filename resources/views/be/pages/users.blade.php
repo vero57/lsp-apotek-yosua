@@ -16,7 +16,19 @@
     @endif
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="h5 mb-0">User List</h2>
-        <a href="{{ route('be.admin.users.create') }}" class="btn btn-primary">Add User</a>
+        <div class="d-flex align-items-center">
+            <a href="{{ route('be.admin.users.create') }}" class="btn btn-primary">Add User</a>
+            <form method="GET" action="" class="form-inline ml-3" style="max-width: 250px;">
+                <div class="input-group w-100">
+                    <input type="text" name="search" class="form-control" placeholder="Cari nama/email/jabatan..." value="{{ request('search') }}">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
     <div class="table-responsive">
         <table class="table table-bordered table-hover mb-0">

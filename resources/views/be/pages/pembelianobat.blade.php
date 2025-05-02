@@ -14,24 +14,15 @@
             });
         </script>
     @endif
-    @if(session('error'))
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops',
-                text: '{{ session('error') }}',
-                showConfirmButton: true
-            });
-        </script>
-    @endif
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="h5 mb-0">Distributor List</h2>
         <div class="d-flex align-items-center">
-            <a href="{{ route('be.admin.distributor.create') }}" class="btn btn-primary">Add Distributor</a>
-            <form method="GET" action="" class="form-inline ml-3" style="max-width: 250px;">
+            <h2 class="h5 mb-0 mr-2">List Pembelian Obat</h2>
+        </div>
+        <div class="d-flex align-items-center">
+            <a href="{{ route('be.admin.pembelianobat.create') }}" class="btn btn-primary mr-2">Add Pembelian</a>
+            <form method="GET" action="" class="form-inline ml-2" style="max-width: 250px;">
                 <div class="input-group w-100">
-                    <input type="text" name="search" class="form-control" placeholder="Cari distributor..." value="{{ request('search') }}">
+                    <input type="text" name="search" class="form-control" placeholder="Cari no nota/distributor..." value="{{ request('search') }}">
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-primary">
                             <i class="fa fa-search"></i>
@@ -46,35 +37,33 @@
             <thead class="thead-light">
                 <tr>
                     <th>No</th>
-                    <th>Nama Distributor</th>
-                    <th>No Telp</th>
-                    <th>Alamat</th>
-                    <th>Created At</th>
-                    <th>Updated At</th>
+                    <th>No Nota</th>
+                    <th>Tgl Pembelian</th>
+                    <th>Total Bayar</th>
+                    <th>Distributor</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($distributors as $distributor)
+                @forelse($pembelianobat as $pembelian)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $distributor->nama_distributor }}</td>
-                    <td>{{ $distributor->telepon }}</td>
-                    <td>{{ $distributor->alamat }}</td>
-                    <td>{{ $distributor->created_at }}</td>
-                    <td>{{ $distributor->updated_at }}</td>
+                    <td>{{ $pembelian->nonota }}</td>
+                    <td>{{ $pembelian->tgl_pembelian }}</td>
+                    <td>{{ 'Rp. ' . number_format((int) $pembelian->total_bayar, 0, ',', '.') }}</td>
+                    <td>{{ $pembelian->distributor ? $pembelian->distributor->nama_distributor : '-' }}</td>
                     <td>
-                        <a href="{{ route('be.admin.distributor.edit', $distributor->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                        <form action="{{ route('be.admin.distributor.destroy', $distributor->id) }}" method="POST" class="d-inline delete-distributor-form">
+                        <a href="{{ route('be.admin.pembelianobat.edit', $pembelian->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <form action="{{ route('be.admin.pembelianobat.destroy', $pembelian->id) }}" method="POST" style="display:inline;" class="delete-pembelian-form">
                             @csrf
                             @method('DELETE')
-                            <button type="button" class="btn btn-sm btn-danger btn-delete-distributor">Delete</button>
+                            <button type="button" class="btn btn-sm btn-danger btn-delete-pembelian">Delete</button>
                         </form>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="8" class="text-center">Belum ada distributor.</td>
+                    <td colspan="8" class="text-center">Belum ada data pembelian obat.</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -84,12 +73,12 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.btn-delete-distributor').forEach(function(btn) {
+    document.querySelectorAll('.btn-delete-pembelian').forEach(function(btn) {
         btn.addEventListener('click', function(e) {
             e.preventDefault();
             Swal.fire({
-                title: 'Hapus Distributor?',
-                text: 'Apakah anda yakin ingin menghapus distributor ini?',
+                title: 'Hapus Pembelian?',
+                text: 'Apakah anda yakin ingin menghapus data pembelian ini?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Ya, hapus!',

@@ -193,7 +193,7 @@
                                 <div class="contact-cont">
                                     <div class="float-left user-img m-r-10">
                                         <a href="profile.html" title="John Doe">
-                                            <img src="{{ asset('be/assets/img/user.jpg') }}" alt="" class="w-40 rounded-circle">
+                                            <img src="{{ asset('be/img/user.jpg') }}" alt="" class="w-40 rounded-circle">
                                             <span class="status online"></span>
                                         </a>
                                     </div>
@@ -206,7 +206,7 @@
                             <li>
                                 <div class="contact-cont">
                                     <div class="float-left user-img m-r-10">
-                                        <a href="profile.html" title="Richard Miles"><img src="{{ asset('be/assets/img/user.jpg') }}" alt="" class="w-40 rounded-circle"><span class="status offline"></span></a>
+                                        <a href="profile.html" title="Richard Miles"><img src="{{ asset('be/img/user.jpg') }}" alt="" class="w-40 rounded-circle"><span class="status offline"></span></a>
                                     </div>
                                     <div class="contact-info">
                                         <span class="contact-name text-ellipsis">Richard Miles</span>
@@ -217,7 +217,7 @@
                             <li>
                                 <div class="contact-cont">
                                     <div class="float-left user-img m-r-10">
-                                        <a href="profile.html" title="John Doe"><img src="{{ asset('be/assets/img/user.jpg') }}" alt="" class="w-40 rounded-circle"><span class="status away"></span></a>
+                                        <a href="profile.html" title="John Doe"><img src="{{ asset('be/img/user.jpg') }}" alt="" class="w-40 rounded-circle"><span class="status away"></span></a>
                                     </div>
                                     <div class="contact-info">
                                         <span class="contact-name text-ellipsis">John Doe</span>
@@ -228,7 +228,7 @@
                             <li>
                                 <div class="contact-cont">
                                     <div class="float-left user-img m-r-10">
-                                        <a href="profile.html" title="Richard Miles"><img src="{{ asset('be/assets/img/user.jpg') }}" alt="" class="w-40 rounded-circle"><span class="status online"></span></a>
+                                        <a href="profile.html" title="Richard Miles"><img src="{{ asset('be/img/user.jpg') }}" alt="" class="w-40 rounded-circle"><span class="status online"></span></a>
                                     </div>
                                     <div class="contact-info">
                                         <span class="contact-name text-ellipsis">Richard Miles</span>
@@ -239,7 +239,7 @@
                             <li>
                                 <div class="contact-cont">
                                     <div class="float-left user-img m-r-10">
-                                        <a href="profile.html" title="John Doe"><img src="{{ asset('be/assets/img/user.jpg') }}" alt="" class="w-40 rounded-circle"><span class="status offline"></span></a>
+                                        <a href="profile.html" title="John Doe"><img src="{{ asset('be/img/user.jpg') }}" alt="" class="w-40 rounded-circle"><span class="status offline"></span></a>
                                     </div>
                                     <div class="contact-info">
                                         <span class="contact-name text-ellipsis">John Doe</span>
@@ -250,7 +250,7 @@
                             <li>
                                 <div class="contact-cont">
                                     <div class="float-left user-img m-r-10">
-                                        <a href="profile.html" title="Richard Miles"><img src="{{ asset('be/assets/img/user.jpg') }}" alt="" class="w-40 rounded-circle"><span class="status away"></span></a>
+                                        <a href="profile.html" title="Richard Miles"><img src="{{ asset('be/img/user.jpg') }}" alt="" class="w-40 rounded-circle"><span class="status away"></span></a>
                                     </div>
                                     <div class="contact-info">
                                         <span class="contact-name text-ellipsis">Richard Miles</span>
@@ -279,7 +279,7 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <img width="28" height="28" class="rounded-circle" src="{{ asset('be/assets/img/user.jpg') }}" alt="">
+                                            <img width="28" height="28" class="rounded-circle" src="{{ asset('be/img/user.jpg') }}" alt="">
                                             <h2>John Doe</h2>
                                         </td>
                                         <td>Johndoe21@gmail.com</td>
@@ -290,7 +290,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <img width="28" height="28" class="rounded-circle" src="{{ asset('be/assets/img/user.jpg') }}" alt="">
+                                            <img width="28" height="28" class="rounded-circle" src="{{ asset('be/img/user.jpg') }}" alt="">
                                             <h2>Richard</h2>
                                         </td>
                                         <td>Richard123@yahoo.com</td>
@@ -301,7 +301,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <img width="28" height="28" class="rounded-circle" src="{{ asset('be/assets/img/user.jpg') }}" alt="">
+                                            <img width="28" height="28" class="rounded-circle" src="{{ asset('be/img/user.jpg') }}" alt="">
                                             <h2>Villiam</h2>
                                         </td>
                                         <td>Richard123@yahoo.com</td>
@@ -312,7 +312,7 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            <img width="28" height="28" class="rounded-circle" src="{{ asset('be/assets/img/user.jpg') }}" alt="">
+                                            <img width="28" height="28" class="rounded-circle" src="{{ asset('be/img/user.jpg') }}" alt="">
                                             <h2>Martin</h2>
                                         </td>
                                         <td>Richard123@yahoo.com</td>

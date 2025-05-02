@@ -7,9 +7,17 @@ use App\Models\User;
 
 class UserbeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
+        $search = $request->input('search');
+        $users = \App\Models\User::when($search, function ($query, $search) {
+                return $query->where(function($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->get();
+
         return view('be.pages.users', compact('users'));
     }
 
