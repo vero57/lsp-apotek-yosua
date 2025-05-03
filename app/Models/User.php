@@ -9,8 +9,11 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'email_verified_at',
         'password',
+        'remember_token',
         'jabatan',
-        // tambahkan field lain jika ada
+        'created_at',
+        'updated_at',
     ];
 }

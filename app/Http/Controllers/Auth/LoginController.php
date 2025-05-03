@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Pelanggan;
 
 class LoginController extends Controller
 {
@@ -23,7 +23,7 @@ class LoginController extends Controller
             'password' => 'required'
         ]);
 
-        $user = DB::table('pelanggan')->where('email', $request->email)->first();
+        $user = Pelanggan::where('email', $request->email)->first();
 
         if ($user && Hash::check($request->password, $user->katakunci)) {
             // Simpan session login sederhana (untuk debug, bukan production)

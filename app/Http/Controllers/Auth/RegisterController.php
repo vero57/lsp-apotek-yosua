@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Pelanggan;
 
 class RegisterController extends Controller
 {
@@ -28,7 +28,7 @@ class RegisterController extends Controller
             'no_telp.unique' => 'No telp sudah digunakan.',
         ]);
 
-        DB::table('pelanggan')->insert([
+        Pelanggan::create([
             'nama_pelanggan' => $request->name,
             'email' => $request->email,
             'katakunci' => Hash::make($request->password),
