@@ -28,7 +28,12 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="h5 mb-0">Distributor List</h2>
         <div class="d-flex align-items-center">
-            <a href="{{ route('be.admin.distributor.create') }}" class="btn btn-primary">Add Distributor</a>
+            @php
+                $user = Auth::guard('web')->user();
+                $isApotekar = $user && $user->jabatan === 'apotekar';
+                $routePrefix = $isApotekar ? 'be.apotekar.distributor' : 'be.admin.distributor';
+            @endphp
+            <a href="{{ route($routePrefix . '.create') }}" class="btn btn-primary">Add Distributor</a>
             <form method="GET" action="" class="form-inline ml-3" style="max-width: 250px;">
                 <div class="input-group w-100">
                     <input type="text" name="search" class="form-control" placeholder="Cari distributor..." value="{{ request('search') }}">
@@ -64,8 +69,8 @@
                     <td>{{ $distributor->created_at }}</td>
                     <td>{{ $distributor->updated_at }}</td>
                     <td>
-                        <a href="{{ route('be.admin.distributor.edit', $distributor->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                        <form action="{{ route('be.admin.distributor.destroy', $distributor->id) }}" method="POST" class="d-inline delete-distributor-form">
+                        <a href="{{ route($routePrefix . '.edit', $distributor->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <form action="{{ route($routePrefix . '.destroy', $distributor->id) }}" method="POST" class="d-inline delete-distributor-form">
                             @csrf
                             @method('DELETE')
                             <button type="button" class="btn btn-sm btn-danger btn-delete-distributor">Delete</button>

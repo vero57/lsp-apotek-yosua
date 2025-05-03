@@ -19,7 +19,12 @@
             <h2 class="h5 mb-0 mr-2">List Pembelian Obat</h2>
         </div>
         <div class="d-flex align-items-center">
-            <a href="{{ route('be.admin.pembelianobat.create') }}" class="btn btn-primary mr-2">Add Pembelian</a>
+            @php
+                $user = Auth::guard('web')->user();
+                $isApotekar = $user && $user->jabatan === 'apotekar';
+                $routePrefix = $isApotekar ? 'be.apotekar.pembelianobat' : 'be.admin.pembelianobat';
+            @endphp
+            <a href="{{ route($routePrefix . '.create') }}" class="btn btn-primary mr-2">Add Pembelian</a>
             <form method="GET" action="" class="form-inline ml-2" style="max-width: 250px;">
                 <div class="input-group w-100">
                     <input type="text" name="search" class="form-control" placeholder="Cari no nota/distributor..." value="{{ request('search') }}">
@@ -53,8 +58,8 @@
                     <td>{{ 'Rp. ' . number_format((int) $pembelian->total_bayar, 0, ',', '.') }}</td>
                     <td>{{ $pembelian->distributor ? $pembelian->distributor->nama_distributor : '-' }}</td>
                     <td>
-                        <a href="{{ route('be.admin.pembelianobat.edit', $pembelian->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                        <form action="{{ route('be.admin.pembelianobat.destroy', $pembelian->id) }}" method="POST" style="display:inline;" class="delete-pembelian-form">
+                        <a href="{{ route($routePrefix . '.edit', $pembelian->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <form action="{{ route($routePrefix . '.destroy', $pembelian->id) }}" method="POST" style="display:inline;" class="delete-pembelian-form">
                             @csrf
                             @method('DELETE')
                             <button type="button" class="btn btn-sm btn-danger btn-delete-pembelian">Delete</button>

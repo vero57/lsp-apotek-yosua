@@ -25,6 +25,8 @@ class PembelianObatController extends Controller
     public function destroy($id)
     {
         PembelianObat::destroy($id);
-        return redirect()->route('be.admin.pembelianobat')->with('success', 'Data pembelian obat berhasil dihapus');
+        $user = auth('web')->user();
+        $route = ($user && $user->jabatan === 'apotekar') ? 'be.apotekar.pembelianobat' : 'be.admin.pembelianobat';
+        return redirect()->route($route)->with('success', 'Data pembelian obat berhasil dihapus');
     }
 }

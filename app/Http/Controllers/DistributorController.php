@@ -28,10 +28,14 @@ class DistributorController extends Controller
     {
         try {
             Distributor::destroy($id);
-            return redirect()->route('be.admin.distributor')->with('success', 'Distributor berhasil dihapus');
+            $user = auth('web')->user();
+            $route = ($user && $user->jabatan === 'apotekar') ? 'be.apotekar.distributor' : 'be.admin.distributor';
+            return redirect()->route($route)->with('success', 'Distributor berhasil dihapus');
         } catch (QueryException $e) {
             if ($e->getCode() == '23000') {
-                return redirect()->route('be.admin.distributor')->with('error', 'Kamu tidak bisa menghapus data ini dikarenakan data ini tersambung ke data lain. Silahkan hapus data yang tersambung terlebih dahulu.');
+                $user = auth('web')->user();
+                $route = ($user && $user->jabatan === 'apotekar') ? 'be.apotekar.distributor' : 'be.admin.distributor';
+                return redirect()->route($route)->with('error', 'Kamu tidak bisa menghapus data ini dikarenakan data ini tersambung ke data lain. Silahkan hapus data yang tersambung terlebih dahulu.');
             }
             throw $e;
         }

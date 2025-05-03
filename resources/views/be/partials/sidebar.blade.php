@@ -7,11 +7,11 @@
             <ul>
                 <li class="menu-title">Main</li>
                 @if($user && $user->jabatan === 'apotekar')
-                    <li class="{{ request()->routeIs('be.admin.distributor') ? 'active' : '' }}">
-                        <a href="{{ route('be.admin.distributor') }}"><i class="fa fa-ambulance"></i> <span>Distributor</span></a>
+                    <li class="{{ request()->routeIs('be.apotekar.distributor') ? 'active' : '' }}">
+                        <a href="{{ route('be.apotekar.distributor') }}"><i class="fa fa-ambulance"></i> <span>Distributor</span></a>
                     </li>
-                    <li class="{{ request()->routeIs('be.admin.pembelianobat') ? 'active' : '' }}">
-                        <a href="{{ route('be.admin.pembelianobat') }}"><i class="fa fa-hospital-o"></i> <span>Pembelian Obat</span></a>
+                    <li class="{{ request()->routeIs('be.apotekar.pembelianobat') ? 'active' : '' }}">
+                        <a href="{{ route('be.apotekar.pembelianobat') }}"><i class="fa fa-hospital-o"></i> <span>Pembelian Obat</span></a>
                     </li>
                 @else
                     <li class="{{ request()->routeIs('be.admin.index') ? 'active' : '' }}">

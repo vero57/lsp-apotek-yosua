@@ -95,4 +95,30 @@ Route::middleware('admin')->group(function () {
     Route::delete('/admin/pembelian-obat/{id}', [PembelianObatController::class, 'destroy'])->name('be.admin.pembelianobat.destroy');
 });
 
+// ==================== ROUTE APOTEKAR (khusus jabatan apotekker) ====================
+Route::middleware('admin')->prefix('apotekar')->name('be.apotekar.')->group(function () {
+    // Main route apotekar: langsung ke distributor
+    Route::get('/', function () {
+        return redirect()->route('be.apotekar.distributor');
+    })->name('home');
+
+    // Distributor routes
+    Route::get('/distributor', [DistributorController::class, 'index'])->name('distributor');
+    Route::get('/distributor/create', [AddDistributorController::class, 'create'])->name('distributor.create');
+    Route::post('/distributor', [AddDistributorController::class, 'store'])->name('distributor.store');
+    Route::get('/distributor/{id}/edit', [EditDistributorController::class, 'edit'])->name('distributor.edit');
+    Route::put('/distributor/{id}', [EditDistributorController::class, 'update'])->name('distributor.update');
+    Route::delete('/distributor/{id}', [DistributorController::class, 'destroy'])->name('distributor.destroy');
+
+    // Pembelian Obat routes
+    Route::get('/pembelian-obat', [PembelianObatController::class, 'index'])->name('pembelianobat');
+    Route::get('/pembelian-obat/create', [AddPembelianObat::class, 'create'])->name('pembelianobat.create');
+    Route::post('/pembelian-obat', [AddPembelianObat::class, 'store'])->name('pembelianobat.store');
+    Route::get('/pembelian-obat/{id}/edit', [EditPembelianObatController::class, 'edit'])->name('pembelianobat.edit');
+    Route::put('/pembelian-obat/{id}', [EditPembelianObatController::class, 'update'])->name('pembelianobat.update');
+    Route::delete('/pembelian-obat/{id}', [PembelianObatController::class, 'destroy'])->name('pembelianobat.destroy');
+
+    // Tambahkan route lain jika diperlukan...
+});
+
 

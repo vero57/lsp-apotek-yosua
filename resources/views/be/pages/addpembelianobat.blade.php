@@ -12,7 +12,12 @@
             </ul>
         </div>
     @endif
-    <form action="{{ route('be.admin.pembelianobat.store') }}" method="POST" id="form-add-pembelian">
+    @php
+        $user = Auth::guard('web')->user();
+        $isApotekar = $user && $user->jabatan === 'apotekar';
+        $routePrefix = $isApotekar ? 'be.apotekar.pembelianobat' : 'be.admin.pembelianobat';
+    @endphp
+    <form action="{{ route($routePrefix . '.store') }}" method="POST" id="form-add-pembelian">
         @csrf
         <div class="form-group mb-3">
             <label for="nonota">No Nota</label>
@@ -38,7 +43,7 @@
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Add Pembelian</button>
-        <a href="{{ route('be.admin.pembelianobat') }}" class="btn btn-secondary">Cancel</a>
+        <a href="{{ route($routePrefix) }}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 <script>

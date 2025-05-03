@@ -34,6 +34,8 @@ class EditPembelianObatController extends Controller
             'id_distributor' => $request->id_distributor,
         ]);
 
-        return redirect()->route('be.admin.pembelianobat')->with('success', 'Pembelian obat berhasil diupdate');
+        $user = auth('web')->user();
+        $route = ($user && $user->jabatan === 'apotekar') ? 'be.apotekar.pembelianobat' : 'be.admin.pembelianobat';
+        return redirect()->route($route)->with('success', 'Pembelian obat berhasil diupdate');
     }
 }

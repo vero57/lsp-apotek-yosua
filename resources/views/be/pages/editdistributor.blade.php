@@ -3,7 +3,12 @@
 @section('content')
 <div class="page-content" style="padding: 24px;">
     <h2 class="h5 mb-4">Edit Distributor</h2>
-    <form action="{{ route('be.admin.distributor.update', $distributor->id) }}" method="POST">
+    @php
+        $user = Auth::guard('web')->user();
+        $isApotekar = $user && $user->jabatan === 'apotekar';
+        $routePrefix = $isApotekar ? 'be.apotekar.distributor' : 'be.admin.distributor';
+    @endphp
+    <form action="{{ route($routePrefix . '.update', $distributor->id) }}" method="POST">
         @csrf
         @method('PUT')
         <div class="form-group mb-3">
@@ -19,7 +24,7 @@
             <textarea class="form-control w-100" id="alamat" name="alamat" rows="2" required>{{ old('alamat', $distributor->alamat) }}</textarea>
         </div>
         <button type="submit" class="btn btn-primary">Update Distributor</button>
-        <a href="{{ route('be.admin.distributor') }}" class="btn btn-secondary">Cancel</a>
+        <a href="{{ route($routePrefix) }}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 @endsection

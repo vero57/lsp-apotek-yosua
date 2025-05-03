@@ -17,6 +17,20 @@ class AdminMiddleware
         if (!Auth::guard('web')->check()) {
             return redirect()->route('be.login');
         }
+
+        $user = Auth::guard('web')->user();
+        $path = $request->path();
+
+        // Jika apotekar akses /admin, redirect ke /apotekar
+        if ($user && $user->jabatan === 'apotekar' && preg_match('#^admin(/|$)#', $path)) {
+            return redirect()->route('be.apotekar.distributor');
+        }
+
+        // Jika non-apotekar akses /apotekar, redirect ke /admin
+        if ($user && $user->jabatan !== 'apotekar' && preg_match('#^apotekar(/|$)#', $path)) {
+            return redirect()->route('be.admin.index');
+        }
+
         return $next($request);
     }
 }

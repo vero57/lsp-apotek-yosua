@@ -29,6 +29,9 @@ class LoginBeController extends Controller
 
         if ($user && Hash::check($request->password, $user->password)) {
             Auth::login($user);
+            if ($user->jabatan === 'apotekar') {
+                return redirect()->route('be.apotekar.distributor');
+            }
             return redirect()->route('be.admin.index');
         }
 

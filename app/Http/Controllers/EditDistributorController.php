@@ -28,6 +28,8 @@ class EditDistributorController extends Controller
             'alamat' => $request->alamat,
         ]);
 
-        return redirect()->route('be.admin.distributor')->with('success', 'Distributor berhasil diupdate');
+        $user = auth('web')->user();
+        $route = ($user && $user->jabatan === 'apotekar') ? 'be.apotekar.distributor' : 'be.admin.distributor';
+        return redirect()->route($route)->with('success', 'Distributor berhasil diupdate');
     }
 }
