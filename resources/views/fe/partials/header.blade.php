@@ -107,7 +107,7 @@
                 <div class="header-bottom-wrapper text-center col">
                     <!-- Header Bottom Logo -->
                     <div class="header-bottom-logo">
-                        <a class="logo" href="index.html">
+                        <a class="logo" href="{{ route('fe.index') }}">
                             <img alt="logo" src="{{ asset('fe/img/logo.png') }}"/>
                         </a>
                     </div>
@@ -119,14 +119,6 @@
                             </li>
                             <li class="{{ Request::routeIs('fe.shop') ? 'active' : '' }}">
                                 <a href="{{ route('fe.shop') }}">shop</a>
-                                <!-- <ul class="sub-menu">
-                                    <li class="{{ Request::routeIs('fe.shop') ? 'active' : '' }}">
-                                        <a href="{{ route('fe.shop') }}">shop page</a>
-                                    </li>
-                                    <li>
-                                        <a href="product-details.html">product details</a>
-                                    </li>
-                                </ul> -->
                             </li>
                             <li class="{{ Request::routeIs('fe.about') ? 'active' : '' }}">
                                 <a href="{{ route('fe.about') }}">About</a>
@@ -142,9 +134,9 @@
                         <button class="search-toggle"><i class="ion-ios-search-strong"></i></button>
                         <!-- Search Form -->
                         <div class="header-search-form">
-                            <form action="#">
-                                <input placeholder="Search..." type="text"/>
-                                <button><i class="ion-ios-search-strong"></i></button>
+                            <form action="{{ route('fe.shop') }}" method="GET">
+                                <input placeholder="Search..." type="text" name="q" value="{{ request('q') }}"/>
+                                <button type="submit"><i class="ion-ios-search-strong"></i></button>
                             </form>
                         </div>
                     </div>

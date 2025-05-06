@@ -22,8 +22,29 @@
             <!-- Product Section Start-->
             <div class="product-section section pt-120 pb-120">
                 <div class="container">
+                    @if(request('q'))
+                        <div class="alert alert-info mb-3">
+                            Hasil pencarian untuk: <strong>{{ request('q') }}</strong>
+                        </div>
+                    @endif
+
+                    <form method="GET" action="{{ route('fe.shop') }}" class="mb-4">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <select name="jenis" class="form-control" onchange="this.form.submit()">
+                                    <option value="">-- Semua Jenis Obat --</option>
+                                    @foreach($jenisList as $jenis)
+                                        <option value="{{ $jenis->id }}" {{ request('jenis') == $jenis->id ? 'selected' : '' }}>
+                                            {{ $jenis->jenis }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+
                     <!-- Product Wrapper Start-->
-                    @include('fe.partials.products')
+                    @include('fe.partials.products', ['products' => $products])
                     <!-- Product Wrapper End-->
                 </div>
             </div><!-- Product Section End-->

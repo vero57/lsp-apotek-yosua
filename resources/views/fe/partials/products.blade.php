@@ -1,146 +1,41 @@
 <div class="row">
-    <!-- Product Start-->
-    <div class="col-lg-4 col-md-6 col-12 mb-60">
-        <div class="product">
-            <div class="image">
-                <a class="img" href="{{route ('fe.product-details')}}"><img alt="Product" src="{{ asset('fe/img/product/1.jpg') }}"/></a>
-                <a class="wishlist" href="#"><i class="fa fa-heart-o"></i></a>
-                <span class="label">New</span>
-            </div>
-            <div class="content">
-                <div class="head fix">
-                    <div class="title-category float-left">
-                        <h5 class="title"><a href="{{route ('fe.product-details')}}">Holiday Candle</a></h5>
-                        <a class="category" href="shop.html">Catalog</a>
-                    </div>
-                    <div class="price float-right">
-                        <span class="new">$38</span>
-                    </div>
+    @php
+        $products = $products ?? collect();
+    @endphp
+    @foreach($products as $product)
+        <div class="col-lg-4 col-md-6 col-12 mb-60">
+            <div class="product">
+                <div class="image">
+                    <a class="img" href="{{ route('fe.product-details', ['id' => $product->id]) }}">
+                        <img alt="{{ $product->nama_obat }}"
+                             src="{{ $product->foto1 ? asset('storage/' . ltrim($product->foto1, '/')) : asset('fe/img/product/default.jpg') }}"/>
+                    </a>
+                    <a class="wishlist" href="#"><i class="fa fa-heart-o"></i></a>
+                    @if($loop->first)
+                        <span class="label">New</span>
+                    @endif
                 </div>
-                <div class="action-button fix">
-                    <a href="#">add to cart</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Product End-->
-    <!-- Product Start-->
-    <div class="col-lg-4 col-md-6 col-12 mb-60">
-        <div class="product">
-            <div class="image">
-                <a class="img" href="{{route ('fe.product-details')}}"><img alt="Product" src="{{ asset('fe/img/product/2.jpg') }}"/></a>
-                <a class="wishlist" href="#"><i class="fa fa-heart-o"></i></a>
-            </div>
-            <div class="content">
-                <div class="head fix">
-                    <div class="title-category float-left">
-                        <h5 class="title"><a href="{{route ('fe.product-details')}}">Christmas Tree</a></h5>
-                        <a class="category" href="shop.html">Catalog</a>
+                <div class="content">
+                    <div class="head fix">
+                        <div class="title-category float-left">
+                            <h5 class="title">
+                                <a href="{{ route('fe.product-details', ['id' => $product->id]) }}">{{ $product->nama_obat }}</a>
+                            </h5>
+                            <a class="category" href="#">{{ $product->jenisObat->jenis ?? '-' }}</a>
+                        </div>
+                        <div class="price float-right">
+                            <span class="new">Rp.{{ number_format($product->harga_jual, 0, ',', '.') }}</span>
+                        </div>
                     </div>
-                    <div class="price float-right">
-                        <span class="new">$38</span>
+                    <div class="action-button fix">
+                        @auth('pelanggan')
+                            <a href="#">add to cart</a>
+                        @endauth
                     </div>
-                </div>
-                <div class="action-button fix">
-                    <a href="#">add to cart</a>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Product End-->
-    <div class="col-lg-4 col-md-6 col-12 mb-60">
-        <div class="product">
-            <div class="image">
-                <a class="img" href="{{route ('fe.product-details')}}"><img alt="Product" src="{{ asset('fe/img/product/3.jpg') }}"/></a>
-                <a class="wishlist" href="#"><i class="fa fa-heart-o"></i></a>
-            </div>
-            <div class="content">
-                <div class="head fix">
-                    <div class="title-category float-left">
-                        <h5 class="title"><a href="{{route ('fe.product-details')}}">Santa Claus Doll</a></h5>
-                        <a class="category" href="shop.html">Catalog</a>
-                    </div>
-                    <div class="price float-right">
-                        <span class="new">$38</span>
-                    </div>
-                </div>
-                <div class="action-button fix">
-                    <a href="#">add to cart</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Product End-->
-    <div class="col-lg-4 col-md-6 col-12 mb-60">
-        <div class="product">
-            <div class="image">
-                <a class="img" href="{{route ('fe.product-details')}}"><img alt="Product" src="{{ asset('fe/img/product/4.jpg') }}"/></a>
-                <a class="wishlist" href="#"><i class="fa fa-heart-o"></i></a>
-                <span class="label">New</span>
-            </div>
-            <div class="content">
-                <div class="head fix">
-                    <div class="title-category float-left">
-                        <h5 class="title"><a href="{{route ('fe.product-details')}}">Holiday Cap</a></h5>
-                        <a class="category" href="shop.html">Catalog</a>
-                    </div>
-                    <div class="price float-right">
-                        <span class="new">$38</span>
-                    </div>
-                </div>
-                <div class="action-button fix">
-                    <a href="#">add to cart</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Product End-->
-    <div class="col-lg-4 col-md-6 col-12 mb-60">
-        <div class="product">
-            <div class="image">
-                <a class="img" href="{{route ('fe.product-details')}}"><img alt="Product" src="{{ asset('fe/img/product/5.jpg') }}"/></a>
-                <a class="wishlist" href="#"><i class="fa fa-heart-o"></i></a>
-            </div>
-            <div class="content">
-                <div class="head fix">
-                    <div class="title-category float-left">
-                        <h5 class="title"><a href="{{route ('fe.product-details')}}">Holiday Doll</a></h5>
-                        <a class="category" href="shop.html">Catalog</a>
-                    </div>
-                    <div class="price float-right">
-                        <span class="new">$38</span>
-                    </div>
-                </div>
-                <div class="action-button fix">
-                    <a href="#">add to cart</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Product End-->
-    <div class="col-lg-4 col-md-6 col-12 mb-60">
-        <div class="product">
-            <div class="image">
-                <a class="img" href="{{route ('fe.product-details')}}"><img alt="Product" src="{{ asset('fe/img/product/6.jpg') }}"/></a>
-                <a class="wishlist" href="#"><i class="fa fa-heart-o"></i></a>
-            </div>
-            <div class="content">
-                <div class="head fix">
-                    <div class="title-category float-left">
-                        <h5 class="title"><a href="{{route ('fe.product-details')}}">Holiday Candle</a></h5>
-                        <a class="category" href="shop.html">Catalog</a>
-                    </div>
-                    <div class="price float-right">
-                        <span class="new">$38</span>
-                    </div>
-                </div>
-                <div class="action-button fix">
-                    <a href="#">add to cart</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Product End-->
+    @endforeach
     <!-- Pagination Start -->
     @if (!empty($showLoadMore) && $showLoadMore)
         <div class="col-12 mt-20 d-flex justify-content-center">

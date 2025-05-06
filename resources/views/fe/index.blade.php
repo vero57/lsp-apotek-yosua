@@ -85,7 +85,7 @@
                         </div>
                     </div><!-- Section Title End-->
                     <!-- Product Wrapper Start-->
-                    @include('fe.partials.products', ['showLoadMore' => true])
+                    @include('fe.partials.products', ['products' => $products, 'showLoadMore' => true])
                     <!-- Product Wrapper End-->
                 </div>
             </div><!-- Product Section End-->

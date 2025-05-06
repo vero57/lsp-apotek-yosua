@@ -58,6 +58,9 @@
                     <td>{{ 'Rp. ' . number_format((int) $pembelian->total_bayar, 0, ',', '.') }}</td>
                     <td>{{ $pembelian->distributor ? $pembelian->distributor->nama_distributor : '-' }}</td>
                     <td>
+                        <button type="button" class="btn btn-sm btn-info btn-detail-pembelian" data-toggle="modal" data-target="#modalDetailPembelian" data-id="{{ $pembelian->id }}">
+                            Detail
+                        </button>
                         <a href="{{ route($routePrefix . '.edit', $pembelian->id) }}" class="btn btn-sm btn-warning">Edit</a>
                         <form action="{{ route($routePrefix . '.destroy', $pembelian->id) }}" method="POST" style="display:inline;" class="delete-pembelian-form">
                             @csrf
@@ -75,6 +78,32 @@
         </table>
     </div>
 </div>
+
+<!-- Modal Detail Pembelian -->
+<div class="modal fade" id="modalDetailPembelian" tabindex="-1" role="dialog" aria-labelledby="modalDetailPembelianLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalDetailPembelianLabel">Detail Pembelian</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="detail-loading" style="display:none;text-align:center;">
+            <span>Loading...</span>
+        </div>
+        <div id="detail-content">
+            <div class="text-center text-muted">Belum ada detail pembelian.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
@@ -94,6 +123,52 @@ document.addEventListener('DOMContentLoaded', function () {
                     btn.closest('form').submit();
                 }
             });
+        });
+    });
+
+
+    document.querySelectorAll('.btn-detail-pembelian').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var pembelianId = btn.getAttribute('data-id');
+            var loading = document.getElementById('detail-loading');
+            var content = document.getElementById('detail-content');
+            loading.style.display = 'block';
+            content.innerHTML = '';
+            fetch('/be/pembelianobat/' + pembelianId + '/detail')
+                .then(res => res.json())
+                .then(data => {
+                    loading.style.display = 'none';
+                    if (data.success && data.details.length > 0) {
+                        let html = `<table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Nama Obat</th>
+                                    <th>Jumlah Beli</th>
+                                    <th>Harga Beli</th>
+                                    <th>Subtotal</th>
+                                    <th>No Nota</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+                        data.details.forEach(function(row) {
+                            html += `<tr>
+                                <td>${row.nama_obat}</td>
+                                <td>${row.jumlah_beli}</td>
+                                <td>Rp. ${parseInt(row.harga_beli).toLocaleString('id-ID')}</td>
+                                <td>Rp. ${parseInt(row.subtotal).toLocaleString('id-ID')}</td>
+                                <td>${row.nonota}</td>
+                            </tr>`;
+                        });
+                        html += `</tbody></table>`;
+                        content.innerHTML = html;
+                    } else {
+                        content.innerHTML = '<div class="text-center text-muted">Belum ada detail pembelian.</div>';
+                    }
+                })
+                .catch(() => {
+                    loading.style.display = 'none';
+                    content.innerHTML = '<div class="alert alert-danger">Gagal mengambil data.</div>';
+                });
         });
     });
 });

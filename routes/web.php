@@ -40,6 +40,7 @@ Route::get('/checkout', [CheckoutController::class, 'index'])->middleware('apote
 Route::get('/contact', [ContactController::class, 'index'])->name('fe.contact');
 Route::get('/product-details', [ProductDetailsController::class, 'index'])->name('fe.product-details');
 Route::get('/shop', [ShopController::class, 'index'])->name('fe.shop');
+Route::get('/product/{id}', [App\Http\Controllers\ShopController::class, 'show'])->name('fe.product-details');
 
 // Route ke halaman login dan register (tampilan untuk Pelanggan)
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
