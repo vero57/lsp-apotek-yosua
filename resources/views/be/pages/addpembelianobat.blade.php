@@ -28,8 +28,16 @@
             <input type="date" class="form-control w-100" id="tgl_pembelian" name="tgl_pembelian" required value="{{ old('tgl_pembelian') }}">
         </div>
         <div class="form-group mb-3">
+            <label for="jumlah_beli">Jumlah Beli</label>
+            <input type="number" class="form-control w-100" id="jumlah_beli" name="jumlah_beli" min="1" value="{{ old('jumlah_beli') }}">
+        </div>
+        <div class="form-group mb-3">
+            <label for="harga_beli">Harga Beli</label>
+            <input type="number" class="form-control w-100" id="harga_beli" name="harga_beli" min="0" value="{{ old('harga_beli') }}">
+        </div>
+        <div class="form-group mb-3">
             <label for="total_bayar">Total Bayar</label>
-            <input type="text" class="form-control w-100" id="total_bayar" name="total_bayar" required value="{{ old('total_bayar') }}">
+            <input type="text" class="form-control w-100" id="total_bayar" name="total_bayar" readonly value="{{ old('total_bayar') }}">
         </div>
         <div class="form-group mb-3">
             <label for="id_distributor">Distributor</label>
@@ -48,22 +56,33 @@
 </div>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    const jumlahBeliInput = document.getElementById('jumlah_beli');
+    const hargaBeliInput = document.getElementById('harga_beli');
     const totalBayarInput = document.getElementById('total_bayar');
     const form = document.getElementById('form-add-pembelian');
 
-    // Format input as user types
-    totalBayarInput.addEventListener('input', function(e) {
-        let value = this.value.replace(/\./g, '').replace(/[^0-9]/g, '');
-        if (value) {
-            this.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        } else {
-            this.value = '';
-        }
-    });
+    function formatRupiah(angka) {
+        if (!angka) return '';
+        return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    function updateTotalBayar() {
+        const jumlah = parseInt(jumlahBeliInput.value) || 0;
+        const harga = parseInt(hargaBeliInput.value) || 0;
+        const total = jumlah * harga;
+        totalBayarInput.value = total ? formatRupiah(total) : '';
+    }
+
+    if (jumlahBeliInput && hargaBeliInput && totalBayarInput) {
+        jumlahBeliInput.addEventListener('input', updateTotalBayar);
+        hargaBeliInput.addEventListener('input', updateTotalBayar);
+    }
 
     // Remove dots before submit so value is numeric
     form.addEventListener('submit', function(e) {
-        totalBayarInput.value = totalBayarInput.value.replace(/\./g, '');
+        if (totalBayarInput) {
+            totalBayarInput.value = totalBayarInput.value.replace(/\./g, '');
+        }
     });
 });
 </script>

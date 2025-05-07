@@ -94,6 +94,9 @@ Route::middleware('admin')->group(function () {
     Route::get('/admin/pembelian-obat/{id}/edit', [EditPembelianObatController::class, 'edit'])->name('be.admin.pembelianobat.edit');
     Route::put('/admin/pembelian-obat/{id}', [EditPembelianObatController::class, 'update'])->name('be.admin.pembelianobat.update');
     Route::delete('/admin/pembelian-obat/{id}', [PembelianObatController::class, 'destroy'])->name('be.admin.pembelianobat.destroy');
+    Route::get('/admin/pembelian-obat/create-detail', [\App\Http\Controllers\AddDetailPembelianObatController::class, 'create'])->name('be.admin.pembelianobat.detail.create');
+    Route::post('/admin/pembelian-obat/create-detail', [\App\Http\Controllers\AddDetailPembelianObatController::class, 'store'])->name('be.admin.pembelianobat.detail.store');
+    Route::get('/admin/pembelian-obat/{id}/detail', [\App\Http\Controllers\PembelianObatController::class, 'detail'])->name('be.admin.pembelianobat.detail');
 });
 
 // ==================== ROUTE APOTEKAR (khusus jabatan apotekker) ====================

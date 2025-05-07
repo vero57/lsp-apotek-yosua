@@ -28,7 +28,7 @@
         </div>
         <div class="form-group mb-3">
             <label for="foto1">Foto 1</label>
-            <input type="file" class="form-control w-100" id="foto1" name="foto1" accept="image/*">
+            <input type="file" class="form-contrAol w-100" id="foto1" name="foto1" accept="image/*">
         </div>
         <div class="form-group mb-3">
             <label for="foto2">Foto 2</label>

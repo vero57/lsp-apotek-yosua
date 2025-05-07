@@ -24,6 +24,7 @@
                 $isApotekar = $user && $user->jabatan === 'apotekar';
                 $routePrefix = $isApotekar ? 'be.apotekar.pembelianobat' : 'be.admin.pembelianobat';
             @endphp
+            <a href="{{ route('be.admin.pembelianobat.detail.create') }}" class="btn btn-primary mr-2">Add Detail</a>
             <a href="{{ route($routePrefix . '.create') }}" class="btn btn-primary mr-2">Add Pembelian</a>
             <form method="GET" action="" class="form-inline ml-2" style="max-width: 250px;">
                 <div class="input-group w-100">
@@ -134,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var content = document.getElementById('detail-content');
             loading.style.display = 'block';
             content.innerHTML = '';
-            fetch('/be/pembelianobat/' + pembelianId + '/detail')
+            fetch('/admin/pembelian-obat/' + pembelianId + '/detail')
                 .then(res => res.json())
                 .then(data => {
                     loading.style.display = 'none';
