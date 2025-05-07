@@ -29,8 +29,16 @@
             </select>
         </div>
         <div class="form-group mb-3">
+            <label for="harga_beli">Harga Beli</label>
+            <input type="text" class="form-control w-100" id="harga_beli" name="harga_beli" value="{{ old('harga_beli', isset($product->harga_beli) ? number_format($product->harga_beli, 0, '', '.') : '') }}">
+        </div>
+        <div class="form-group mb-3">
+            <label for="margin">Margin (%)</label>
+            <input type="number" class="form-control w-100" id="margin" name="margin" min="0" max="100" value="{{ old('margin', isset($product->margin) ? $product->margin : '') }}">
+        </div>
+        <div class="form-group mb-3">
             <label for="harga_jual">Harga Jual</label>
-            <input type="text" class="form-control w-100" id="harga_jual" name="harga_jual" required value="{{ old('harga_jual', number_format((int) $product->harga_jual, 0, ',', '.')) }}">
+            <input type="text" class="form-control w-100" id="harga_jual" name="harga_jual" required readonly value="{{ old('harga_jual', number_format((int) $product->harga_jual, 0, '', '.')) }}">
         </div>
         <div class="form-group mb-3">
             <label for="deskripsi_obat">Deskripsi Obat</label>
@@ -67,16 +75,35 @@
 </div>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const hargaInput = document.getElementById('harga_jual');
-    if (hargaInput) {
-        hargaInput.addEventListener('input', function(e) {
-            let value = this.value.replace(/\D/g, '');
-            if (value) {
-                this.value = parseInt(value).toLocaleString('id-ID');
-            } else {
-                this.value = '';
-            }
+    const hargaBeliInput = document.getElementById('harga_beli');
+    const marginInput = document.getElementById('margin');
+    const hargaJualInput = document.getElementById('harga_jual');
+
+    function parseNumber(str) {
+        return parseInt((str || '').toString().replace(/\./g, '').replace(/[^0-9]/g, '')) || 0;
+    }
+
+    function formatRupiah(angka) {
+        if (!angka) return '';
+        return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    function hitungHargaJual() {
+        const hargaBeli = parseNumber(hargaBeliInput.value);
+        const margin = parseFloat(marginInput.value) || 0;
+        const hargaJual = hargaBeli + (hargaBeli * margin / 100);
+        hargaJualInput.value = hargaJual ? formatRupiah(Math.round(hargaJual)) : '';
+    }
+
+    if (hargaBeliInput && marginInput && hargaJualInput) {
+        hargaBeliInput.addEventListener('input', function() {
+            let value = this.value.replace(/\./g, '').replace(/[^0-9]/g, '');
+            this.value = value ? formatRupiah(value) : '';
+            hitungHargaJual();
         });
+        marginInput.addEventListener('input', hitungHargaJual);
+        // Set initial value on page load
+        hitungHargaJual();
     }
 });
 </script>

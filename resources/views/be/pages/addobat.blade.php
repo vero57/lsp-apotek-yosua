@@ -19,8 +19,16 @@
             </select>
         </div>
         <div class="form-group mb-3">
+            <label for="harga_beli">Harga Beli</label>
+            <input type="number" class="form-control w-100" id="harga_beli" name="harga_beli" min="0">
+        </div>
+        <div class="form-group mb-3">
+            <label for="margin">Margin (%)</label>
+            <input type="number" class="form-control w-100" id="margin" name="margin" min="0" max="100">
+        </div>
+        <div class="form-group mb-3">
             <label for="harga_jual">Harga Jual</label>
-            <input type="text" class="form-control w-100" id="harga_jual" name="harga_jual" required>
+            <input type="text" class="form-control w-100" id="harga_jual" name="harga_jual" required readonly>
         </div>
         <div class="form-group mb-3">
             <label for="deskripsi_obat">Deskripsi Obat</label>
@@ -48,16 +56,20 @@
 </div>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const hargaInput = document.getElementById('harga_jual');
-    if (hargaInput) {
-        hargaInput.addEventListener('input', function(e) {
-            let value = this.value.replace(/\D/g, '');
-            if (value) {
-                this.value = parseInt(value).toLocaleString('id-ID');
-            } else {
-                this.value = '';
-            }
-        });
+    const hargaBeliInput = document.getElementById('harga_beli');
+    const marginInput = document.getElementById('margin');
+    const hargaJualInput = document.getElementById('harga_jual');
+
+    function hitungHargaJual() {
+        const hargaBeli = parseFloat(hargaBeliInput.value) || 0;
+        const margin = parseFloat(marginInput.value) || 0;
+        const hargaJual = hargaBeli + (hargaBeli * margin / 100);
+        hargaJualInput.value = hargaJual ? Math.round(hargaJual).toLocaleString('id-ID') : '';
+    }
+
+    if (hargaBeliInput && marginInput && hargaJualInput) {
+        hargaBeliInput.addEventListener('input', hitungHargaJual);
+        marginInput.addEventListener('input', hitungHargaJual);
     }
 });
 </script>
