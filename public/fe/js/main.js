@@ -211,8 +211,8 @@ $.scrollUp({
 /*----- 
 	Cart Plus Minus
 --------------------------------*/
-$('.product-quantity').prepend('<span class="dec qtybtn"><i class="fa fa-angle-left"></i></span>');
-$('.product-quantity').append('<span class="inc qtybtn"><i class="fa fa-angle-right"></i></span>');
+// $('.product-quantity').prepend('<span class="dec qtybtn"><i class="fa fa-angle-left"></i></span>');
+// $('.product-quantity').append('<span class="inc qtybtn"><i class="fa fa-angle-right"></i></span>');
 $('.qtybtn').on('click', function() {
 	var $button = $(this);
 	var oldValue = $button.parent().find('input').val();

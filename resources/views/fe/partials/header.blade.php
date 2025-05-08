@@ -39,50 +39,54 @@
                                             
                                         </li>
                                         <li>
+                                            @php
+                                                $cartItems = [];
+                                                $cartCount = 0;
+                                                $cartTotal = 0;
+                                                if(session('user_id')) {
+                                                    $cartItems = \App\Models\Keranjang::with('obat')
+                                                        ->where('id_pelanggan', session('user_id'))
+                                                        ->get();
+                                                    $cartCount = $cartItems->sum('jumlah_order');
+                                                    $cartTotal = $cartItems->sum('subtotal');
+                                                }
+                                            @endphp
                                             <a data-toggle="dropdown" href="#">
                                                 <i class="fa fa-shopping-cart"></i>
-                                                <span class="num">2</span>
+                                                <span class="num">{{ $cartCount }}</span>
                                             </a>
                                             <!-- Mini Cart -->
                                             <div class="mini-cart-brief dropdown-menu text-left">
                                                 <!-- Cart Products -->
                                                 <div class="all-cart-product clearfix">
-                                                    <div class="single-cart clearfix">
-                                                        <div class="cart-image">
-                                                            <a href="product-details.html">
-                                                                <img alt="" src="img/cart/1.jpg"/>
-                                                            </a>
+                                                    @forelse($cartItems as $item)
+                                                        <div class="single-cart clearfix">
+                                                            <div class="cart-image">
+                                                                <a href="#">
+                                                                    <img alt="" src="{{ $item->obat && $item->obat->foto1 ? asset('storage/' . $item->obat->foto1) : asset('fe/img/noimage.png') }}"/>
+                                                                </a>
+                                                            </div>
+                                                            <div class="cart-info">
+                                                                <h5>
+                                                                    <a href="#">{{ $item->obat ? $item->obat->nama_obat : '-' }}</a>
+                                                                </h5>
+                                                                <p>{{ $item->jumlah_order }} x Rp{{ number_format($item->harga, 0, ',', '.') }}</p>
+                                                                <a class="cart-delete" href="#" title="Remove this item" data-id="{{ $item->id }}">
+                                                                    <i class="fa fa-trash-o"></i>
+                                                                </a>
+                                                            </div>
                                                         </div>
-                                                        <div class="cart-info">
-                                                            <h5><a href="product-details.html">Holiday Candle</a></h5>
-                                                            <p>1 x £9.00</p>
-                                                            <a class="cart-delete" href="#" title="Remove this item">
-                                                                <i class="fa fa-trash-o"></i>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="single-cart clearfix">
-                                                        <div class="cart-image">
-                                                            <a href="product-details.html">
-                                                                <img alt="" src="img/cart/2.jpg"/>
-                                                            </a>
-                                                        </div>
-                                                        <div class="cart-info">
-                                                            <h5><a href="product-details.html">Christmas Tree</a></h5>
-                                                            <p>1 x £9.00</p>
-                                                            <a class="cart-delete" href="#" title="Remove this item">
-                                                                <i class="fa fa-trash-o"></i>
-                                                            </a>
-                                                        </div>
-                                                    </div>
+                                                    @empty
+                                                        <div class="text-center text-muted py-2">Keranjang kosong</div>
+                                                    @endforelse
                                                 </div>
                                                 <!-- Cart Total -->
                                                 <div class="cart-totals">
-                                                    <h5>Total <span>£12.00</span></h5>
+                                                    <h5>Total <span>Rp{{ number_format($cartTotal, 0, ',', '.') }}</span></h5>
                                                 </div>
                                                 <!-- Cart Button -->
                                                 <div class="cart-bottom clearfix">
-                                                    <a href="{{route('fe.checkout')}}">Check out</a>
+                                                    <a href="{{ route('fe.checkout') }}">Check out</a>
                                                 </div>
                                             </div>
                                         </li>
@@ -147,3 +151,30 @@
         </div>
     </div><!-- Header Bottom End -->
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Hapus item keranjang
+    document.querySelectorAll('.cart-delete').forEach(function(btn) {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            var id = btn.getAttribute('data-id');
+            fetch("{{ route('fe.cart.delete') }}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: new URLSearchParams({id: id})
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // Optional: reload only cart section, for now reload page
+                    location.reload();
+                }
+            });
+        });
+    });
+});
+</script>

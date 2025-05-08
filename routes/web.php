@@ -126,8 +126,10 @@ Route::middleware('admin')->prefix('apotekar')->name('be.apotekar.')->group(func
     Route::get('/pembelian-obat/create-detail', [\App\Http\Controllers\AddDetailPembelianObatController::class, 'create'])->name('pembelianobat.detail.create');
     Route::post('/pembelian-obat/create-detail', [\App\Http\Controllers\AddDetailPembelianObatController::class, 'store'])->name('pembelianobat.detail.store');
     Route::get('/pembelian-obat/{id}/detail', [\App\Http\Controllers\PembelianObatController::class, 'detail'])->name('pembelianobat.detail');
-
-    // ...existing code...
 });
+
+// Tambahkan route untuk menambah ke keranjang (cart) via POST.
+Route::post('/cart/add', [\App\Http\Controllers\CartController::class, 'add'])->name('fe.cart.add');
+Route::post('/cart/delete', [\App\Http\Controllers\CartController::class, 'delete'])->name('fe.cart.delete');
 
 

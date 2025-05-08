@@ -28,9 +28,12 @@
                         </div>
                     </div>
                     <div class="action-button fix">
-                        @auth('pelanggan')
-                            <a href="#">add to cart</a>
-                        @endauth
+                        <form class="form-add-to-cart" data-id="{{ $product->id }}">
+                            @csrf
+                            <input type="hidden" name="id_obat" value="{{ $product->id }}">
+                            <input type="hidden" name="jumlah_order" value="1">
+                            <button type="submit" class="btn btn-primary btn-sm">Add to cart</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -58,3 +61,57 @@
     @endif
     <!-- Pagination End -->
 </div>
+
+<!-- Toast Notification -->
+<div id="cart-toast" style="display:none;position:fixed;top:30px;right:30px;z-index:9999;min-width:220px;">
+    <div style="background:#28a745;color:#fff;padding:16px 24px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.15);font-weight:bold;">
+        <span id="cart-toast-message"></span>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.form-add-to-cart').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var formData = new FormData(form);
+            fetch("{{ route('fe.cart.add') }}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value,
+                    'Accept': 'application/json'
+                },
+                body: formData
+            })
+            .then(async res => {
+                if (res.status === 401) {
+                    window.location.href = "{{ route('login') }}";
+                    return;
+                }
+                let data = await res.json();
+                if (data.success) {
+                    showCartToast('Berhasil ditambahkan ke keranjang!');
+                    // Optional: reload header/cart count via AJAX
+                    setTimeout(function(){ location.reload(); }, 1200);
+                } else {
+                    showCartToast(data.message || 'Gagal menambahkan ke keranjang', true);
+                }
+            })
+            .catch(() => {
+                showCartToast('Gagal menambahkan ke keranjang', true);
+            });
+        });
+    });
+
+    function showCartToast(message, isError = false) {
+        var toast = document.getElementById('cart-toast');
+        var msg = document.getElementById('cart-toast-message');
+        toast.style.display = 'block';
+        msg.textContent = message;
+        toast.firstElementChild.style.background = isError ? '#dc3545' : '#28a745';
+        setTimeout(function(){
+            toast.style.display = 'none';
+        }, 2000);
+    }
+});
+</script>
