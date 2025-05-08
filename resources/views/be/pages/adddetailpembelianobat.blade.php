@@ -12,7 +12,11 @@
             </ul>
         </div>
     @endif
-    <form action="{{ route('be.admin.pembelianobat.detail.store') }}" method="POST" id="form-add-detail-pembelian">
+    <form action="{{ 
+        request()->is('admin/*') 
+            ? route('be.admin.pembelianobat.detail.store') 
+            : route('be.apotekar.pembelianobat.detail.store') 
+    }}" method="POST" id="form-add-detail-pembelian">
         @csrf
         <div class="form-group mb-3">
             <label for="id_pembelian">No Nota</label>

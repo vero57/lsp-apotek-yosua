@@ -23,8 +23,9 @@
                 $user = Auth::guard('web')->user();
                 $isApotekar = $user && $user->jabatan === 'apotekar';
                 $routePrefix = $isApotekar ? 'be.apotekar.pembelianobat' : 'be.admin.pembelianobat';
+                $routeDetail = $isApotekar ? route('be.apotekar.pembelianobat.detail.create') : route('be.admin.pembelianobat.detail.create');
             @endphp
-            <a href="{{ route('be.admin.pembelianobat.detail.create') }}" class="btn btn-primary mr-2">Add Detail</a>
+            <a href="{{ $routeDetail }}" class="btn btn-primary mr-2">Add Detail</a>
             <a href="{{ route($routePrefix . '.create') }}" class="btn btn-primary mr-2">Add Pembelian</a>
             <form method="GET" action="" class="form-inline ml-2" style="max-width: 250px;">
                 <div class="input-group w-100">

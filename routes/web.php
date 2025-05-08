@@ -122,7 +122,12 @@ Route::middleware('admin')->prefix('apotekar')->name('be.apotekar.')->group(func
     Route::put('/pembelian-obat/{id}', [EditPembelianObatController::class, 'update'])->name('pembelianobat.update');
     Route::delete('/pembelian-obat/{id}', [PembelianObatController::class, 'destroy'])->name('pembelianobat.destroy');
 
-    // Tambahkan route lain jika diperlukan...
+    // Tambahkan route add detail pembelian untuk apotekar
+    Route::get('/pembelian-obat/create-detail', [\App\Http\Controllers\AddDetailPembelianObatController::class, 'create'])->name('pembelianobat.detail.create');
+    Route::post('/pembelian-obat/create-detail', [\App\Http\Controllers\AddDetailPembelianObatController::class, 'store'])->name('pembelianobat.detail.store');
+    Route::get('/pembelian-obat/{id}/detail', [\App\Http\Controllers\PembelianObatController::class, 'detail'])->name('pembelianobat.detail');
+
+    // ...existing code...
 });
 
 
