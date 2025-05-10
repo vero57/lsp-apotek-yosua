@@ -32,7 +32,7 @@
                             @csrf
                             <input type="hidden" name="id_obat" value="{{ $product->id }}">
                             <input type="hidden" name="jumlah_order" value="1">
-                            <button type="submit" class="btn btn-primary btn-sm">Add to cart</button>
+                            <button type="submit" class="btn btn-success btn-sm">Add to cart</button>
                         </form>
                     </div>
                 </div>

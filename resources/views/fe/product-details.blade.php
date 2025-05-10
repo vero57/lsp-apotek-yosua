@@ -48,14 +48,10 @@
                     <div class="single-product-content col-lg-5 col-12 mb-30">
                         <!-- Title -->
                         <h1 class="title">{{ $product->nama_obat }}</h1>
-                        <!-- Product Rating -->
-                        <span class="product-rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                        </span>
+                        <!-- Jenis Obat -->
+                        <div style="margin-bottom:10px;">
+                            Jenis obat: {{ $product->jenisObat->jenis ?? '-' }}
+                        </div>
                         <!-- Price -->
                         <span class="product-price">Rp{{ number_format($product->harga_jual, 0, ',', '.') }}</span>
                         <!-- Description -->
@@ -68,19 +64,22 @@
                         </div>
                         <!-- Quantity & Cart Button -->
                         <div class="product-quantity-cart fix">
-                            <div class="product-quantity">
-                                <input name="qtybox" type="text" value="0"/>
-                            </div>
-                            @auth('pelanggan')
-                                <button class="add-to-cart">add to cart</button>
-                            @endauth
+                            <form id="form-add-to-cart-detail">
+                                @csrf
+                                <div class="product-quantity" style="display: flex; align-items: center; gap: 5px; margin-bottom: 10px;">
+                                    <button type="button" class="qty-btn" id="qty-decrease" style="background:#f5f5f5;color:red;border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;">
+                                        <i class="fa fa-chevron-left"></i>
+                                    </button>
+                                    <input id="qtybox" name="jumlah_order" type="text" value="1" style="width:50px;text-align:center;border:none;background:#f5f5f5;font-size:16px;border-radius:8px;"/>
+                                    <button type="button" class="qty-btn" id="qty-increase" style="background:#f5f5f5;color:red;border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;">
+                                        <i class="fa fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                                <input type="hidden" name="id_obat" value="{{ $product->id }}">
+                                <button type="submit" class="add-to-cart" style="margin-top:0;width:100%;background:red;color:#fff;border:none;padding:10px 0;border-radius:8px;font-weight:bold;transition:background 0.2s;">Tambah ke Keranjang</button>
+                            </form>
                         </div>
                         <!-- Action Button -->
-                        <div class="product-action-button fix">
-                            <button><i class="ion-ios-email-outline"></i>Email to a friend</button>
-                            <button><i class="ion-ios-heart-outline"></i>Wishlist</button>
-                            <button><i class="ion-ios-printer-outline"></i>Print</button>
-                        </div>
                         <!-- Social Share -->
                         <div class="product-share fix">
                             <h6>Share :</h6>
@@ -110,5 +109,64 @@
     <script src="{{ asset('fe/js/ajax-mail.js') }}"></script>
     <!-- Main JS -->
     <script src="{{ asset('fe/js/main.js') }}"></script>
+    <script>
+        $(function() {
+            $('#qty-decrease').click(function() {
+                let $qty = $('#qtybox');
+                let val = parseInt($qty.val()) || 0;
+                if(val > 1) $qty.val(val - 1);
+            });
+            $('#qty-increase').click(function() {
+                let $qty = $('#qtybox');
+                let val = parseInt($qty.val()) || 1;
+                $qty.val(val + 1);
+            });
+            $('#qtybox').on('input', function() {
+                let val = parseInt($(this).val()) || 1;
+                if(val < 1) $(this).val(1);
+            });
+
+            // Add to cart AJAX
+            $('#form-add-to-cart-detail').submit(function(e) {
+                e.preventDefault();
+                var form = this;
+                var formData = new FormData(form);
+                $.ajax({
+                    url: "{{ route('fe.cart.add') }}",
+                    method: "POST",
+                    headers: {'X-CSRF-TOKEN': $('input[name="_token"]').val()},
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(data) {
+                        if(data.success) {
+                            showCartToast('Berhasil ditambahkan ke keranjang!');
+                            setTimeout(function(){ location.reload(); }, 1200);
+                        } else {
+                            showCartToast(data.message || 'Gagal menambahkan ke keranjang', true);
+                        }
+                    },
+                    error: function(xhr) {
+                        if(xhr.status === 401) {
+                            window.location.href = "{{ route('login') }}";
+                            return;
+                        }
+                        showCartToast('Gagal menambahkan ke keranjang', true);
+                    }
+                });
+            });
+
+            function showCartToast(message, isError = false) {
+                var toast = $('#cart-toast');
+                var msg = $('#cart-toast-message');
+                toast.show();
+                msg.text(message);
+                toast.children().first().css('background', isError ? '#dc3545' : '#28a745');
+                setTimeout(function(){
+                    toast.hide();
+                }, 2000);
+            }
+        });
+    </script>
 </body>
 @endsection

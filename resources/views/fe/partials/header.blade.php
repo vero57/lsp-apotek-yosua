@@ -47,7 +47,7 @@
                                                     $cartItems = \App\Models\Keranjang::with('obat')
                                                         ->where('id_pelanggan', session('user_id'))
                                                         ->get();
-                                                    $cartCount = $cartItems->sum('jumlah_order');
+                                                    $cartCount = $cartItems->count(); // <-- hanya jumlah item unik
                                                     $cartTotal = $cartItems->sum('subtotal');
                                                 }
                                             @endphp

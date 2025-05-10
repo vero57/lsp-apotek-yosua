@@ -18,7 +18,7 @@
         $routePrefix = $isApotekar ? 'be.apotekar.pembelianobat' : 'be.admin.pembelianobat';
         if (!isset($obats)) {
             $obats = \App\Models\Product::all(['id', 'nama_obat']);
-        }
+        }   
     @endphp
     <form action="{{ route($routePrefix . '.update', $pembelianobat->id) }}" method="POST" id="form-edit-pembelian">
         @csrf
