@@ -28,16 +28,27 @@
             <input type="date" class="form-control w-100" id="tgl_pembelian" name="tgl_pembelian" required value="{{ old('tgl_pembelian') }}">
         </div>
         <div class="form-group mb-3">
+            <label for="id_obat">Nama Obat</label>
+            <select class="form-control w-100" id="id_obat" name="id_obat" required>
+                <option value="">-- Pilih Obat --</option>
+                @foreach($obats as $obat)
+                    <option value="{{ $obat->id }}" {{ old('id_obat') == $obat->id ? 'selected' : '' }}>
+                        {{ $obat->nama_obat }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group mb-3">
             <label for="jumlah_beli">Jumlah Beli</label>
-            <input type="number" class="form-control w-100" id="jumlah_beli" name="jumlah_beli" min="1" value="{{ old('jumlah_beli') }}">
+            <input type="number" class="form-control w-100" id="jumlah_beli" name="jumlah_beli" min="1" required value="{{ old('jumlah_beli') }}">
         </div>
         <div class="form-group mb-3">
             <label for="harga_beli">Harga Beli</label>
-            <input type="number" class="form-control w-100" id="harga_beli" name="harga_beli" min="0" value="{{ old('harga_beli') }}">
+            <input type="text" class="form-control w-100" id="harga_beli" name="harga_beli" required value="{{ old('harga_beli') }}">
         </div>
         <div class="form-group mb-3">
-            <label for="total_bayar">Total Bayar</label>
-            <input type="text" class="form-control w-100" id="total_bayar" name="total_bayar" readonly value="{{ old('total_bayar') }}">
+            <label for="subtotal">Subtotal</label>
+            <input type="text" class="form-control w-100" id="subtotal" name="subtotal" readonly value="{{ old('subtotal') }}">
         </div>
         <div class="form-group mb-3">
             <label for="id_distributor">Distributor</label>
@@ -58,7 +69,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const jumlahBeliInput = document.getElementById('jumlah_beli');
     const hargaBeliInput = document.getElementById('harga_beli');
-    const totalBayarInput = document.getElementById('total_bayar');
+    const subtotalInput = document.getElementById('subtotal');
     const form = document.getElementById('form-add-pembelian');
 
     function formatRupiah(angka) {
@@ -66,23 +77,36 @@ document.addEventListener('DOMContentLoaded', function () {
         return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
-    function updateTotalBayar() {
-        const jumlah = parseInt(jumlahBeliInput.value) || 0;
-        const harga = parseInt(hargaBeliInput.value) || 0;
-        const total = jumlah * harga;
-        totalBayarInput.value = total ? formatRupiah(total) : '';
+    function parseNumber(str) {
+        return parseInt(str.replace(/\./g, '').replace(/[^0-9]/g, '')) || 0;
     }
 
-    if (jumlahBeliInput && hargaBeliInput && totalBayarInput) {
-        jumlahBeliInput.addEventListener('input', updateTotalBayar);
-        hargaBeliInput.addEventListener('input', updateTotalBayar);
+    function updateSubtotal() {
+        const jumlah = parseNumber(jumlahBeliInput.value);
+        const harga = parseNumber(hargaBeliInput.value);
+        const subtotal = jumlah * harga;
+        subtotalInput.value = subtotal ? formatRupiah(subtotal) : '';
     }
+
+    jumlahBeliInput.addEventListener('input', function() {
+        if (this.value < 1) this.value = 1;
+        updateSubtotal();
+    });
+
+    hargaBeliInput.addEventListener('input', function() {
+        let value = this.value.replace(/\./g, '').replace(/[^0-9]/g, '');
+        if (value) {
+            this.value = formatRupiah(value);
+        } else {
+            this.value = '';
+        }
+        updateSubtotal();
+    });
 
     // Remove dots before submit so value is numeric
     form.addEventListener('submit', function(e) {
-        if (totalBayarInput) {
-            totalBayarInput.value = totalBayarInput.value.replace(/\./g, '');
-        }
+        hargaBeliInput.value = parseNumber(hargaBeliInput.value);
+        subtotalInput.value = parseNumber(subtotalInput.value);
     });
 });
 </script>

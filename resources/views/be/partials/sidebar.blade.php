@@ -32,8 +32,8 @@
                     <li class="{{ request()->routeIs('be.admin.pembelianobat') ? 'active' : '' }}">
                         <a href="{{ route('be.admin.pembelianobat') }}"><i class="fa fa-hospital-o"></i> <span>Pembelian Obat</span></a>
                     </li>
-                    <li class="">
-                        <a href="#"><i class="fa fa-truck   "></i> <span>Pengiriman</span></a>
+                    <li class="{{ request()->routeIs('be.admin.jenispengiriman') ? 'active' : '' }}">
+                        <a href="{{ route('be.admin.jenispengiriman') }}"><i class="fa fa-truck"></i> <span> Jenis Pengiriman</span></a>
                     </li>
                 @endif
             </ul>

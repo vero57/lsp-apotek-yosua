@@ -20,7 +20,7 @@
         <!-- Page Banner Section End-->
 
         <!-- Checkout Section Start-->
-        <div class="cart-section section pt-120 pb-90">
+        <div class="cart-section section pt-120 pinb-90">
             <div class="container">
                 <div class="row">
                     <!-- Left Column -->
@@ -58,7 +58,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Billing Method -->
                             <div class="panel single-accordion">
                                 <a class="accordion-head collapsed" data-parent="#checkout-accordion" data-toggle="collapse" href="#billing-method">2. Billing Information</a>

@@ -16,6 +16,9 @@
         $user = Auth::guard('web')->user();
         $isApotekar = $user && $user->jabatan === 'apotekar';
         $routePrefix = $isApotekar ? 'be.apotekar.pembelianobat' : 'be.admin.pembelianobat';
+        if (!isset($obats)) {
+            $obats = \App\Models\Product::all(['id', 'nama_obat']);
+        }
     @endphp
     <form action="{{ route($routePrefix . '.update', $pembelianobat->id) }}" method="POST" id="form-edit-pembelian">
         @csrf
@@ -28,18 +31,32 @@
             <label for="tgl_pembelian">Tanggal Pembelian</label>
             <input type="date" class="form-control w-100" id="tgl_pembelian" name="tgl_pembelian" required value="{{ old('tgl_pembelian', $pembelianobat->tgl_pembelian) }}">
         </div>
+        {{-- Tambahkan input detail pembelian --}}
+        <div class="form-group mb-3">
+            <label for="id_obat">Nama Obat</label>
+            <select class="form-control w-100" id="id_obat" name="id_obat" required>
+                <option value="">-- Pilih Obat --</option>
+                @foreach($obats as $obat)
+                    <option value="{{ $obat->id }}" 
+                        {{ old('id_obat', isset($detailpembelian) ? $detailpembelian->id_obat : '') == $obat->id ? 'selected' : '' }}>
+                        {{ $obat->nama_obat }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
         <div class="form-group mb-3">
             <label for="jumlah_beli">Jumlah Beli</label>
-            <input type="number" class="form-control w-100" id="jumlah_beli" name="jumlah_beli" min="1" value="{{ old('jumlah_beli', isset($pembelianobat->jumlah_beli) ? $pembelianobat->jumlah_beli : '') }}">
+            <input type="number" class="form-control w-100" id="jumlah_beli" name="jumlah_beli" min="1" value="{{ old('jumlah_beli', isset($detailpembelian) ? $detailpembelian->jumlah_beli : '') }}">
         </div>
         <div class="form-group mb-3">
             <label for="harga_beli">Harga Beli</label>
-            <input type="number" class="form-control w-100" id="harga_beli" name="harga_beli" min="0" value="{{ old('harga_beli', isset($pembelianobat->harga_beli) ? $pembelianobat->harga_beli : '') }}">
+            <input type="text" class="form-control w-100" id="harga_beli" name="harga_beli" value="{{ old('harga_beli', isset($detailpembelian) ? number_format($detailpembelian->harga_beli, 0, '', '.') : '') }}">
         </div>
         <div class="form-group mb-3">
-            <label for="total_bayar">Total Bayar</label>
-            <input type="text" class="form-control w-100" id="total_bayar" name="total_bayar" readonly value="{{ old('total_bayar', number_format($pembelianobat->total_bayar, 0, '', '.')) }}">
+            <label for="subtotal">Subtotal</label>
+            <input type="text" class="form-control w-100" id="subtotal" name="subtotal" readonly value="{{ old('subtotal', isset($detailpembelian) ? number_format($detailpembelian->subtotal, 0, '', '.') : '') }}">
         </div>
+        {{-- End input detail pembelian --}}
         <div class="form-group mb-3">
             <label for="id_distributor">Distributor</label>
             <select class="form-control w-100" id="id_distributor" name="id_distributor" required>
@@ -51,6 +68,8 @@
                 @endforeach
             </select>
         </div>
+        {{-- Tambahkan input hidden total_bayar agar tetap dikirim --}}
+        <input type="hidden" id="total_bayar" name="total_bayar" value="{{ old('total_bayar', isset($detailpembelian) ? $detailpembelian->subtotal : $pembelianobat->total_bayar) }}">
         <button type="submit" class="btn btn-primary">Update Pembelian</button>
         <a href="{{ route($routePrefix) }}" class="btn btn-secondary">Cancel</a>
     </form>
@@ -59,6 +78,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const jumlahBeliInput = document.getElementById('jumlah_beli');
     const hargaBeliInput = document.getElementById('harga_beli');
+    const subtotalInput = document.getElementById('subtotal');
     const totalBayarInput = document.getElementById('total_bayar');
     const form = document.getElementById('form-edit-pembelian');
 
@@ -67,25 +87,42 @@ document.addEventListener('DOMContentLoaded', function () {
         return angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
-    function updateTotalBayar() {
-        const jumlah = parseInt(jumlahBeliInput.value) || 0;
-        const harga = parseInt(hargaBeliInput.value) || 0;
-        const total = jumlah * harga;
-        totalBayarInput.value = total ? formatRupiah(total) : '';
+    function parseNumber(str) {
+        return parseInt(str.replace(/\./g, '').replace(/[^0-9]/g, '')) || 0;
     }
 
-    if (jumlahBeliInput && hargaBeliInput && totalBayarInput) {
-        jumlahBeliInput.addEventListener('input', updateTotalBayar);
-        hargaBeliInput.addEventListener('input', updateTotalBayar);
-        // Set initial value on page load
-        updateTotalBayar();
+    function updateSubtotal() {
+        const jumlah = parseNumber(jumlahBeliInput.value);
+        const harga = parseNumber(hargaBeliInput.value);
+        const subtotal = jumlah * harga;
+        subtotalInput.value = subtotal ? formatRupiah(subtotal) : '';
+        // Set hidden total_bayar juga
+        totalBayarInput.value = subtotal ? subtotal : '';
     }
+
+    jumlahBeliInput.addEventListener('input', function() {
+        if (this.value < 1) this.value = 1;
+        updateSubtotal();
+    });
+
+    hargaBeliInput.addEventListener('input', function() {
+        let value = this.value.replace(/\./g, '').replace(/[^0-9]/g, '');
+        if (value) {
+            this.value = formatRupiah(value);
+        } else {
+            this.value = '';
+        }
+        updateSubtotal();
+    });
+
+    // Set subtotal & total_bayar on page load
+    updateSubtotal();
 
     // Remove dots before submit so value is numeric
     form.addEventListener('submit', function(e) {
-        if (totalBayarInput) {
-            totalBayarInput.value = totalBayarInput.value.replace(/\./g, '');
-        }
+        hargaBeliInput.value = parseNumber(hargaBeliInput.value);
+        subtotalInput.value = parseNumber(subtotalInput.value);
+        totalBayarInput.value = parseNumber(totalBayarInput.value);
     });
 });
 </script>

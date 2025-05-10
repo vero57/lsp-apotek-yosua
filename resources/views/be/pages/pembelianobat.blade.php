@@ -25,7 +25,6 @@
                 $routePrefix = $isApotekar ? 'be.apotekar.pembelianobat' : 'be.admin.pembelianobat';
                 $routeDetail = $isApotekar ? route('be.apotekar.pembelianobat.detail.create') : route('be.admin.pembelianobat.detail.create');
             @endphp
-            <a href="{{ $routeDetail }}" class="btn btn-primary mr-2">Add Detail</a>
             <a href="{{ route($routePrefix . '.create') }}" class="btn btn-primary mr-2">Add Pembelian</a>
             <form method="GET" action="" class="form-inline ml-2" style="max-width: 250px;">
                 <div class="input-group w-100">
@@ -141,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(data => {
                     loading.style.display = 'none';
                     if (data.success && data.details.length > 0) {
-                        let html = `<table class="table table-bordered">
+                        let html = `<div class="table-responsive"><table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th>Nama Obat</th>
@@ -158,10 +157,10 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <td>${row.jumlah_beli}</td>
                                 <td>Rp. ${parseInt(row.harga_beli).toLocaleString('id-ID')}</td>
                                 <td>Rp. ${parseInt(row.subtotal).toLocaleString('id-ID')}</td>
-                                <td>${row.nonota}</td>
+                                <td style="word-break:break-all;max-width:180px;">${row.nonota}</td>
                             </tr>`;
                         });
-                        html += `</tbody></table>`;
+                        html += `</tbody></table></div>`;
                         content.innerHTML = html;
                     } else {
                         content.innerHTML = '<div class="text-center text-muted">Belum ada detail pembelian.</div>';

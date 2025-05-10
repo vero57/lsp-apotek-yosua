@@ -21,4 +21,9 @@ class PembelianObat extends Model
     {
         return $this->belongsTo(Distributor::class, 'id_distributor');
     }
+
+    public function detailPembelianObat()
+    {
+        return $this->hasMany(DetailPembelianObat::class, 'id_pembelian');
+    }
 }

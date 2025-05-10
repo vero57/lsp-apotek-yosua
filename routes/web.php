@@ -97,6 +97,13 @@ Route::middleware('admin')->group(function () {
     Route::get('/admin/pembelian-obat/create-detail', [\App\Http\Controllers\AddDetailPembelianObatController::class, 'create'])->name('be.admin.pembelianobat.detail.create');
     Route::post('/admin/pembelian-obat/create-detail', [\App\Http\Controllers\AddDetailPembelianObatController::class, 'store'])->name('be.admin.pembelianobat.detail.store');
     Route::get('/admin/pembelian-obat/{id}/detail', [\App\Http\Controllers\PembelianObatController::class, 'detail'])->name('be.admin.pembelianobat.detail');
+
+    // Route ke halaman add jenis pengiriman
+    Route::get('/admin/create', [\App\Http\Controllers\AddJenisPengirimanController::class, 'create'])->name('be.admin.jenispengiriman.create');
+    Route::post('/admin/create', [\App\Http\Controllers\AddJenisPengirimanController::class, 'store'])->name('be.admin.jenispengiriman.store');
+
+    // Route ke halaman table jenis pengiriman
+    Route::get('/admin/jenis-pengiriman', [\App\Http\Controllers\JenisPengirimanController::class, 'index'])->name('be.admin.jenispengiriman');
 });
 
 // ==================== ROUTE APOTEKAR (khusus jabatan apotekker) ====================
