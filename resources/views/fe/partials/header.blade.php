@@ -62,13 +62,15 @@
                                                     @forelse($cartItems as $item)
                                                         <div class="single-cart clearfix">
                                                             <div class="cart-image">
-                                                                <a href="#">
+                                                                <a href="{{ $item->obat ? route('fe.product-details', ['id' => $item->obat->id]) : '#' }}">
                                                                     <img alt="" src="{{ $item->obat && $item->obat->foto1 ? asset('storage/' . $item->obat->foto1) : asset('fe/img/noimage.png') }}"/>
                                                                 </a>
                                                             </div>
                                                             <div class="cart-info">
                                                                 <h5>
-                                                                    <a href="#">{{ $item->obat ? $item->obat->nama_obat : '-' }}</a>
+                                                                    <a href="{{ $item->obat ? route('fe.product-details', ['id' => $item->obat->id]) : '#' }}">
+                                                                        {{ $item->obat ? $item->obat->nama_obat : '-' }}
+                                                                    </a>
                                                                 </h5>
                                                                 <p>{{ $item->jumlah_order }} x Rp{{ number_format($item->harga, 0, ',', '.') }}</p>
                                                                 <a class="cart-delete" href="#" title="Remove this item" data-id="{{ $item->id }}">
@@ -86,7 +88,7 @@
                                                 </div>
                                                 <!-- Cart Button -->
                                                 <div class="cart-bottom clearfix">
-                                                    <a href="{{ route('fe.checkout') }}">Check out</a>
+                                                    <a href="{{ route('fe.cart') }}">Check Cart</a>
                                                 </div>
                                             </div>
                                         </li>

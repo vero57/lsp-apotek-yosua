@@ -32,7 +32,7 @@ use Illuminate\Support\Facades\DB;
 // Route ke halaman utama (tampilan untuk Pelanggan) FE
 Route::get('/', [HomeController::class, 'index'])->name('fe.index');
 Route::get('/about', [AboutController::class, 'index'])->name('fe.about');
-Route::get('/cart', [CartController::class, 'index'])->middleware('apotek');
+Route::get('/cart', [CartController::class, 'index'])->middleware('apotek')->name('fe.cart');
 Route::get('/checkout', [CheckoutController::class, 'index'])->middleware('apotek');
 Route::get('/wishlist', [WishlistController::class, 'index'])->middleware('apotek')->name('fe.wishlist');
 Route::get('/my-account', [MyAccountController::class, 'index'])->middleware('apotek')->name('fe.my_account');
