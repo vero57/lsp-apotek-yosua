@@ -77,7 +77,7 @@ Route::middleware('admin')->group(function () {
     Route::get('/admin/products/create-jenis', [\App\Http\Controllers\AddJenisObat::class, 'create'])->name('be.admin.products.createjenis');
     Route::post('/admin/products/store-jenis', [\App\Http\Controllers\AddJenisObat::class, 'store'])->name('be.admin.products.storejenis');
     Route::delete('/admin/products/jenis/{id}', [\App\Http\Controllers\AddJenisObat::class, 'destroy'])->name('be.admin.products.destroyjenis');
-    Route::delete('/admin/products/{id}', [\App\Http\Controllers\ProductController::class, 'destroy'])->name('be.admin.products.destroy');
+    Route::delete('/admin/products/{id}', [\AppHttp\Controllers\ProductController::class, 'destroy'])->name('be.admin.products.destroy');
 
     Route::get('/admin/pelanggan', [\App\Http\Controllers\PagePelangganController::class, 'index'])->name('be.admin.pelanggan');
 
@@ -141,5 +141,6 @@ Route::middleware('admin')->prefix('apotekar')->name('be.apotekar.')->group(func
 // Tambahkan route untuk menambah ke keranjang (cart) via POST.
 Route::post('/cart/add', [\App\Http\Controllers\CartController::class, 'add'])->name('fe.cart.add');
 Route::post('/cart/delete', [\App\Http\Controllers\CartController::class, 'delete'])->name('fe.cart.delete');
+Route::post('/cart/process-checkout', [\App\Http\Controllers\CartController::class, 'processCheckout'])->name('fe.cart.processCheckout');
 
 

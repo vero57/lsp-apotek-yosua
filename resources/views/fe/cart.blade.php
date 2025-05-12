@@ -110,7 +110,14 @@
                                     <h4 class="title">Process Checkout</h4>
                                     <p><span>Subtotal</span><span>Rp{{ number_format($cartTotal, 0, ',', '.') }}</span></p>
                                     <h5><span>Grand total</span><span>Rp{{ number_format($cartTotal, 0, ',', '.') }}</span></h5>
-                                    <a href="{{ route('fe.checkout') }}" class="button">process to checkout</a>
+                                    <form id="checkout-form" action="{{ route('fe.cart.processCheckout') }}" method="POST">
+                                        @csrf
+                                        @foreach($cartItems as $item)
+                                            <input type="hidden" name="cart_id[]" value="{{ $item->id }}">
+                                            <input type="hidden" name="jumlah_order[{{ $item->id }}]" id="jumlah_order_{{ $item->id }}" value="{{ $item->jumlah_order }}">
+                                        @endforeach
+                                        <button type="submit" class="button">process to checkout</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -221,6 +228,16 @@
                     document.querySelectorAll('.cart-checkout-process p span:last-child').forEach(function(span) {
                         span.textContent = 'Rp' + total.toLocaleString('id-ID');
                     });
+                });
+            });
+
+            // Update hidden input value when quantity changes
+            document.querySelectorAll('.cart-qty-input').forEach(function(input) {
+                input.addEventListener('input', function() {
+                    var id = this.getAttribute('data-id');
+                    var val = this.value;
+                    var hiddenInput = document.getElementById('jumlah_order_' + id);
+                    if (hiddenInput) hiddenInput.value = val;
                 });
             });
         });

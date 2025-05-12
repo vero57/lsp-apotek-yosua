@@ -67,4 +67,26 @@ class CartController extends Controller
 
         return response()->json(['success' => $deleted ? true : false]);
     }
+
+    public function processCheckout(Request $request)
+    {
+        $userId = session('user_id');
+        if (!$userId) {
+            return redirect()->route('fe.cart')->with('error', 'Silakan login terlebih dahulu.');
+        }
+        $cartIds = $request->input('cart_id', []);
+        $jumlahOrders = $request->input('jumlah_order', []);
+        foreach ($cartIds as $cartId) {
+            $cart = \App\Models\Keranjang::where('id', $cartId)
+                ->where('id_pelanggan', $userId)
+                ->first();
+            if ($cart && isset($jumlahOrders[$cartId])) {
+                $qty = max(1, intval($jumlahOrders[$cartId]));
+                $cart->jumlah_order = $qty;
+                $cart->subtotal = $qty * $cart->harga;
+                $cart->save();
+            }
+        }
+        return redirect()->route('fe.checkout');
+    }
 }

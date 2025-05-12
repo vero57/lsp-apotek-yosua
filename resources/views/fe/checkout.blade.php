@@ -52,21 +52,29 @@
                         <div class="col-2 text-center">Jumlah</div>
                         <div class="col-2 text-end">Subtotal</div>
                     </div>
-                    <div class="row align-items-center py-2" style="border-bottom:1px solid #f0f0f0;">
-                        <div class="col-6">
-                            Paracetamol 500mg Strip
+                    @forelse($cartItems as $item)
+                        <div class="row align-items-center py-2" style="border-bottom:1px solid #f0f0f0;">
+                            <div class="col-6 d-flex align-items-center">
+                                <img src="{{ $item->obat && $item->obat->foto1 ? asset('storage/' . $item->obat->foto1) : asset('fe/img/noimage.png') }}" alt="obat" style="width:48px;height:48px;object-fit:cover;border-radius:8px;margin-right:12px;">
+                                <span>{{ $item->obat ? $item->obat->nama_obat : '-' }}</span>
+                            </div>
+                            <div class="col-2 text-center">
+                                Rp{{ number_format($item->harga, 0, ',', '.') }}
+                            </div>
+                            <div class="col-2 text-center">
+                                {{ $item->jumlah_order }}
+                            </div>
+                            <div class="col-2 text-end fw-semibold">
+                                Rp{{ number_format($item->subtotal, 0, ',', '.') }}
+                            </div>
                         </div>
-                        <div class="col-2 text-center">
-                            Rp5.000
+                    @empty
+                        <div class="row">
+                            <div class="col text-center text-muted py-3">
+                                Keranjang kosong
+                            </div>
                         </div>
-                        <div class="col-2 text-center">
-                            2
-                        </div>
-                        <div class="col-2 text-end fw-semibold">
-                            Rp10.000
-                        </div>
-                    </div>
-                    <!-- Tambahkan baris produk lain di sini jika perlu -->
+                    @endforelse
 
                     <div class="row mt-4">
                         <div class="col-md-6 mb-2">
@@ -127,7 +135,7 @@
                         <div class="w-100 mt-2 text-start" style="max-width:350px;">
                             <small class="text-black-50">
                                 Dengan mengklik 'Buat Pesanan', kamu telah menyetujui 
-                                <a href="#" class="text-info text-decoration-underline">Syarat &amp; Ketentuan Proteksi Produk</a> Shopee
+                                <a href="#" class="text-info text-decoration-underline">Syarat &amp; Ketentuan Proteksi Produk</a> Pharmasheesh
                             </small>
                         </div>
                     </div>
