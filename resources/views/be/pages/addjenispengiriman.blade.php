@@ -16,7 +16,14 @@
         @csrf
         <div class="form-group mb-3">
             <label for="jenis_kirim">Jenis Kirim</label>
-            <input type="text" class="form-control w-100" id="jenis_kirim" name="jenis_kirim" required value="{{ old('jenis_kirim') }}">
+            <select class="form-control w-100" id="jenis_kirim" name="jenis_kirim" required>
+                <option value="">-- Pilih Jenis Kirim --</option>
+                <option value="ekonomi" {{ old('jenis_kirim') == 'ekonomi' ? 'selected' : '' }}>Ekonomi</option>
+                <option value="kargo" {{ old('jenis_kirim') == 'kargo' ? 'selected' : '' }}>Kargo</option>
+                <option value="regular" {{ old('jenis_kirim') == 'regular' ? 'selected' : '' }}>Regular</option>
+                <option value="same day" {{ old('jenis_kirim') == 'same day' ? 'selected' : '' }}>Same Day</option>
+                <option value="standar" {{ old('jenis_kirim') == 'standar' ? 'selected' : '' }}>Standar</option>
+            </select>
         </div>
         <div class="form-group mb-3">
             <label for="nama_ekspedisi">Nama Ekspedisi</label>

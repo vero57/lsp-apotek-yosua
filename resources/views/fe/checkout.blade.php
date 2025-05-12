@@ -95,9 +95,42 @@
                         </div>
                     </div>
                 </div>
-                <div class="w-100 mb-4 p-4 bg-secondary rounded text-white">
-                    <!-- Kolom 3 -->
-                    Kolom 3
+                <div class="w-100 mb-4 p-4 bg-light rounded text-black">
+                    <!-- Kolom 3: Ringkasan Pembayaran -->
+                    <div class="d-flex flex-column">
+                        <div class="w-100" style="max-width:350px; margin-left:auto;">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-black-50">Subtotal untuk Produk</span>
+                                <span class="text-black">Rp6.120</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-black-50">Total Proteksi Produk</span>
+                                <span class="text-black">Rp500</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-black-50">Subtotal Pengiriman</span>
+                                <span class="text-black">Rp3.500</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-black-50">Biaya Layanan <i class="fa fa-question-circle" title="Biaya layanan"></i></span>
+                                <span class="text-black">Rp2.500</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="fw-bold" style="font-size:1.2em;">Total Pembayaran</span>
+                                <span class="fw-bold" style="font-size:1.7em; color:#ff5722;">Rp12.620</span>
+                            </div>
+                            <hr class="my-3" style="border-color: #fff; opacity:0.2;">
+                        </div>
+                        <div class="w-100" style="max-width:350px; margin-left:auto;">
+                            <button class="btn btn-lg w-100 mt-2" style="background:red; color:#fff; font-weight:bold;">Buat Pesanan</button>
+                        </div>
+                        <div class="w-100 mt-2 text-start" style="max-width:350px;">
+                            <small class="text-black-50">
+                                Dengan mengklik 'Buat Pesanan', kamu telah menyetujui 
+                                <a href="#" class="text-info text-decoration-underline">Syarat &amp; Ketentuan Proteksi Produk</a> Shopee
+                            </small>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div><!-- Checkout Section End-->
