@@ -20,194 +20,89 @@
         <!-- Page Banner Section End-->
 
         <!-- Checkout Section Start-->
-        <div class="cart-section section pt-120 pinb-90">
+        <div class="cart-section section pt-50 pinb-90">
             <div class="container">
-                <div class="row">
-                    <!-- Left Column -->
-                    <div class="col-lg-6 col-12 mb-30">
-                        <!-- Checkout Accordion Start -->
-                        <div class="panel-group" id="checkout-accordion">
-
-                            <!-- Checkout Method -->
-                            <div class="panel single-accordion">
-                                <a class="accordion-head" data-parent="#checkout-accordion" data-toggle="collapse" href="#checkout-method">1. Checkout Method</a>
-                                <div class="collapse show" id="checkout-method">
-                                    <div class="checkout-method accordion-body fix">
-                                        <ul class="checkout-method-list">
-                                            <li class="active" data-form="checkout-login-form">Login</li>
-                                            <li data-form="checkout-register-form">Register</li>
-                                        </ul>
-
-                                        <form action="#" class="checkout-login-form">
-                                            <div class="row">
-                                                <div class="input-box col-md-6 col-12 mb-20"><input placeholder="Email Address" type="email"/></div>
-                                                <div class="input-box col-md-6 col-12 mb-20"><input placeholder="Password" type="password"/></div>
-                                                <div class="input-box col-md-6 col-12 mb-20"><input type="submit" value="Login"/></div>
-                                            </div>
-                                        </form>
-
-                                        <form action="#" class="checkout-register-form">
-                                            <div class="row">
-                                                <div class="input-box col-md-6 col-12 mb-20"><input placeholder="Your Name" type="text"/></div>
-                                                <div class="input-box col-md-6 col-12 mb-20"><input placeholder="Email Address" type="email"/></div>
-                                                <div class="input-box col-md-6 col-12 mb-20"><input placeholder="Password" type="password"/></div>
-                                                <div class="input-box col-md-6 col-12 mb-20"><input placeholder="Confirm Password" type="password"/></div>
-                                                <div class="input-box col-md-6 col-12 mb-20"><input type="submit" value="Register"/></div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Billing Method -->
-                            <div class="panel single-accordion">
-                                <a class="accordion-head collapsed" data-parent="#checkout-accordion" data-toggle="collapse" href="#billing-method">2. Billing Information</a>
-                                <div class="collapse" id="billing-method">
-                                    <div class="accordion-body billing-method fix">
-                                        <form action="#" class="billing-form checkout-form">
-                                            <div class="row">
-                                                <div class="col-12 mb-20">
-                                                    <select>
-                                                        <option value="1">Select a country</option>
-                                                        <option value="2">Bangladesh</option>
-                                                        <!-- ... -->
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-6 col-12 mb-20"><input placeholder="First Name" type="text"/></div>
-                                                <div class="col-md-6 col-12 mb-20"><input placeholder="Last Name" type="text"/></div>
-                                                <div class="col-12 mb-20"><input placeholder="Company Name" type="text"/></div>
-                                                <div class="col-12 mb-20"><input placeholder="Street address" type="text"/></div>
-                                                <div class="col-12 mb-20"><input placeholder="Apartment, suite, unit etc. (optional)" type="text"/></div>
-                                                <div class="col-12 mb-20"><input placeholder="Town / City" type="text"/></div>
-                                                <div class="col-md-6 col-12 mb-20"><input placeholder="State / County" type="text"/></div>
-                                                <div class="col-md-6 col-12 mb-20"><input placeholder="Postcode / Zip" type="text"/></div>
-                                                <div class="col-md-6 col-12 mb-20"><input placeholder="Email Address" type="email"/></div>
-                                                <div class="col-md-6 col-12 mb-20"><input placeholder="Phone Number" type="text"/></div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Shipping Method -->
-                            <div class="panel single-accordion">
-                                <a class="accordion-head collapsed" data-parent="#checkout-accordion" data-toggle="collapse" href="#shipping-method">3. Shipping Information</a>
-                                <div class="collapse" id="shipping-method">
-                                    <div class="accordion-body shipping-method fix">
-                                        <h5>Shipping Address</h5>
-                                        <p><span>Address:</span> Bootexperts, Banasree D-Block, Dhaka 1219, Bangladesh</p>
-                                        <button class="shipping-form-toggle">Ship to a different address?</button>
-
-                                        <form action="#" class="shipping-form checkout-form">
-                                            <div class="row">
-                                                <div class="col-12 mb-20">
-                                                    <select>
-                                                        <option value="1">Select a country</option>
-                                                        <option value="2">Bangladesh</option>
-                                                        <!-- ... -->
-                                                    </select>
-                                                </div>
-                                                <!-- Nama, alamat, kota, email, dll. seperti pada form billing -->
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Payment Method -->
-                            <div class="panel single-accordion">
-                                <a class="accordion-head collapsed" data-parent="#checkout-accordion" data-toggle="collapse" href="#payment-method">4. Payment Method</a>
-                                <div class="collapse" id="payment-method">
-                                    <div class="accordion-body payment-method fix">
-                                        <ul class="payment-method-list">
-                                            <li class="active">Check / Money Order</li>
-                                            <li class="payment-form-toggle">Credit Card</li>
-                                        </ul>
-                                        <form action="#" class="payment-form">
-                                            <div class="row">
-                                                <div class="input-box col-12 mb-20">
-                                                    <label for="card-name">Name on Card *</label>
-                                                    <input id="card-name" type="text"/>
-                                                </div>
-                                                <div class="input-box col-12 mb-20">
-                                                    <label>Credit Card Type</label>
-                                                    <select>
-                                                        <option>Please Select</option>
-                                                        <option>Credit Card Type 1</option>
-                                                        <option>Credit Card Type 2</option>
-                                                    </select>
-                                                </div>
-                                                <div class="input-box col-12 mb-20">
-                                                    <label for="card-number">Credit Card Number *</label>
-                                                    <input id="card-number" type="text"/>
-                                                </div>
-                                                <div class="input-box col-12">
-                                                    <div class="row">
-                                                        <div class="input-box col-12">
-                                                            <label>Expiration Date</label>
-                                                        </div>
-                                                        <div class="input-box col-md-6 col-12 mb-20">
-                                                            <select>
-                                                                <option>Month</option>
-                                                                <option>Jan</option>
-                                                                <!-- ... -->
-                                                            </select>
-                                                        </div>
-                                                        <div class="input-box col-md-6 col-12 mb-20">
-                                                            <select>
-                                                                <option>Year</option>
-                                                                <option>2025</option>
-                                                                <!-- ... -->
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="input-box col-12">
-                                                    <label for="card-Verify">Card Verification Number *</label>
-                                                    <input id="card-Verify" type="text"/>
-                                                    <a href="#">What is it?</a>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </div><!-- Checkout Accordion End -->
+                <div class="w-100 mb-4 p-4 bg-light rounded">
+                    <!-- Kolom 1 -->
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fa fa-map-marker me-2" aria-hidden="true" style="font-size:2rem; color:red;">&nbsp;</i>
+                        <span class="fw-bold" style="font-size: 2.5em; color:red;">Alamat Pengiriman</span>
                     </div>
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="fw-bold" style="font-size: 1.5em">Donianto</div>
+                            <div class="text-muted fs-6">0812-3456-7890</div>
+                        </div>
+                        <div class="flex-grow-1 d-flex flex-column align-items-center">
+                            <span class="fs-5 text-center w-100 text-break" style="max-width: 400px;">
+                                Jl. Raya Karadenan No.7, Karadenan, Kec. Cibinong, Kabupaten Bogor, Jawa Barat 16111
+                            </span>
+                        </div>
+                        <div class="text-end" style="min-width:110px;">
+                            <a href="#" class="ms-2 text-primary text-decoration-underline fs-6" style="font-size:1em;">Ubah alamat</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-100 mb-4 p-4 bg-white rounded">
+                    <!-- Kolom 2 -->
+                    <div class="fw-bold mb-3" style="font-size: 2em; color:red;">Obat yang dipesan</div>
+                    <div class="row fw-semibold text-secondary mb-2" style="font-size: 1.1em;">
+                        <div class="col-6">Nama Produk</div>
+                        <div class="col-2 text-center">Harga Satuan</div>
+                        <div class="col-2 text-center">Jumlah</div>
+                        <div class="col-2 text-end">Subtotal</div>
+                    </div>
+                    <div class="row align-items-center py-2" style="border-bottom:1px solid #f0f0f0;">
+                        <div class="col-6">
+                            Paracetamol 500mg Strip
+                        </div>
+                        <div class="col-2 text-center">
+                            Rp5.000
+                        </div>
+                        <div class="col-2 text-center">
+                            2
+                        </div>
+                        <div class="col-2 text-end fw-semibold">
+                            Rp10.000
+                        </div>
+                    </div>
+                    <!-- Tambahkan baris produk lain di sini jika perlu -->
 
-                    <!-- Order Summary -->
-                    <div class="col-lg-6 col-12 mb-30">
-                        <div class="order-details-wrapper">
-                            <h2>Your Order</h2>
-                            <div class="order-details">
-                                <form action="#">
-                                    <ul>
-                                        <li><p class="strong">Product</p><p class="strong">Total</p></li>
-                                        <li><p>Holiday Candle x1</p><p>$104.99</p></li>
-                                        <li><p>Christmas Tree x1</p><p>$85.99</p></li>
-                                        <li><p class="strong">Cart Subtotal</p><p class="strong">$190.98</p></li>
-                                        <li>
-                                            <p class="strong">Shipping</p>
-                                            <p>
-                                                <input id="flat" name="order-shipping" type="radio">
-                                                <label for="flat">Flat Rate $7.00</label><br/>
-                                                <input id="free" name="order-shipping" type="radio">
-                                                <label for="free">Free Shipping</label>
-                                            </p>
-                                        </li>
-                                        <li><p class="strong">Order Total</p><p class="strong">$190.98</p></li>
-                                        <li><button class="button">Place Order</button></li>
-                                    </ul>
-                                </form>
+                    <div class="row mt-4">
+                        <div class="col-md-6 mb-2">
+                            <div class="p-3 bg-light rounded d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="fw-semibold fs-5">Opsi pengiriman</span>
+                                    <select class="form-select fw-bold fs-5 ms-2" style="width:auto;min-width:120px;">
+                                        <option selected>Reguler</option>
+                                        <option>Express</option>
+                                        <option>Kilat</option>
+                                    </select>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fw-semibold fs-5">Harga ongkir</span>
+                                    <span class="fw-bold fs-5">Rp10.000</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="p-3 bg-light rounded text-center">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fw-bold" style="font-size:2em;">Total pesanan</span>
+                                    <span class="text-secondary" style="font-size:1em;">Rp10.000</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="w-100 mb-4 p-4 bg-secondary rounded text-white">
+                    <!-- Kolom 3 -->
+                    Kolom 3
+                </div>
             </div>
         </div><!-- Checkout Section End-->
 
-
-    </div><!-- Main Wrapper End -->
+    <!-- Main Wrapper End -->
 
     <!-- JS Assets -->
     <script src="{{ asset('fe/js/vendor/jquery-1.12.0.min.js') }}"></script>
