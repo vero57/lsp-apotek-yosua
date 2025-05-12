@@ -28,6 +28,7 @@
                     <th>Logo Ekspedisi</th>
                     <th>Created At</th>
                     <th>Updated At</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,10 +46,18 @@
                     </td>
                     <td>{{ $item->created_at }}</td>
                     <td>{{ $item->updated_at }}</td>
+                    <td>
+                        <a href="{{ route('be.admin.jenispengiriman.edit', $item->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <form action="{{ route('be.admin.jenispengiriman.destroy', $item->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="text-center">Belum ada data jenis pengiriman.</td>
+                    <td colspan="7" class="text-center">Belum ada data jenis pengiriman.</td>
                 </tr>
                 @endforelse
             </tbody>

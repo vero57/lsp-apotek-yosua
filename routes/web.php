@@ -104,6 +104,9 @@ Route::middleware('admin')->group(function () {
 
     // Route ke halaman table jenis pengiriman
     Route::get('/admin/jenis-pengiriman', [\App\Http\Controllers\JenisPengirimanController::class, 'index'])->name('be.admin.jenispengiriman');
+    Route::get('/admin/jenis-pengiriman/{id}/edit', [\App\Http\Controllers\EditJenisPengirimanController::class, 'edit'])->name('be.admin.jenispengiriman.edit');
+    Route::put('/admin/jenis-pengiriman/{id}', [\App\Http\Controllers\EditJenisPengirimanController::class, 'update'])->name('be.admin.jenispengiriman.update');
+    Route::delete('/admin/jenis-pengiriman/{id}', [\App\Http\Controllers\AddJenisPengirimanController::class, 'destroy'])->name('be.admin.jenispengiriman.destroy');
 });
 
 // ==================== ROUTE APOTEKAR (khusus jabatan apotekker) ====================
