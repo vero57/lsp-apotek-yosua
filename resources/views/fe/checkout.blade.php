@@ -97,7 +97,9 @@
                             <div class="p-3 bg-light rounded text-center">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="fw-bold" style="font-size:2em;">Total pesanan</span>
-                                    <span class="text-secondary" style="font-size:1em;">Rp10.000</span>
+                                    <span class="text-secondary" style="font-size:1em;">
+                                        Rp{{ number_format($cartTotal, 0, ',', '.') }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
