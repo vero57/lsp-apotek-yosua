@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\JenisPengiriman;
 
 class CheckoutController extends Controller
 {
@@ -16,6 +17,8 @@ class CheckoutController extends Controller
                 ->get();
             $cartTotal = $cartItems->sum('subtotal');
         }
-        return view('fe.checkout', compact('cartItems', 'cartTotal'));
+        $jenisPengiriman = JenisPengiriman::all();
+
+        return view('fe.checkout', compact('cartItems', 'cartTotal', 'jenisPengiriman'));
     }
 }

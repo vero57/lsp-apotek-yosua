@@ -82,9 +82,9 @@
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <span class="fw-semibold fs-5">Opsi pengiriman</span>
                                     <select class="form-select fw-bold fs-5 ms-2" style="width:auto;min-width:120px;">
-                                        <option selected>Reguler</option>
-                                        <option>Express</option>
-                                        <option>Kilat</option>
+                                        @foreach($jenisPengiriman as $jenis)
+                                            <option value="{{ $jenis->id }}">{{ $jenis->jenis_kirim }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
@@ -105,29 +105,35 @@
                         </div>
                     </div>
                 </div>
+                @php
+                    $proteksiProduk = 500;
+                    $subtotalPengiriman = 10000;
+                    $biayaLayanan = 2000;
+                    $totalPembayaran = $cartTotal + $proteksiProduk + $subtotalPengiriman + $biayaLayanan;
+                @endphp
                 <div class="w-100 mb-4 p-4 bg-light rounded text-black">
                     <!-- Kolom 3: Ringkasan Pembayaran -->
                     <div class="d-flex flex-column">
                         <div class="w-100" style="max-width:350px; margin-left:auto;">
                             <div class="d-flex justify-content-between mb-2">
                                 <span class="text-black-50">Subtotal untuk Produk</span>
-                                <span class="text-black">Rp6.120</span>
+                                <span class="text-black">Rp{{ number_format($cartTotal, 0, ',', '.') }}</span>
                             </div>
                             <div class="d-flex justify-content-between mb-2">
                                 <span class="text-black-50">Total Proteksi Produk</span>
-                                <span class="text-black">Rp500</span>
+                                <span class="text-black">Rp{{ number_format($proteksiProduk, 0, ',', '.') }}</span>
                             </div>
                             <div class="d-flex justify-content-between mb-2">
                                 <span class="text-black-50">Subtotal Pengiriman</span>
-                                <span class="text-black">Rp3.500</span>
+                                <span class="text-black">Rp{{ number_format($subtotalPengiriman, 0, ',', '.') }}</span>
                             </div>
                             <div class="d-flex justify-content-between mb-2">
                                 <span class="text-black-50">Biaya Layanan <i class="fa fa-question-circle" title="Biaya layanan"></i></span>
-                                <span class="text-black">Rp2.500</span>
+                                <span class="text-black">Rp{{ number_format($biayaLayanan, 0, ',', '.') }}</span>
                             </div>
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <span class="fw-bold" style="font-size:1.2em;">Total Pembayaran</span>
-                                <span class="fw-bold" style="font-size:1.7em; color:#ff5722;">Rp12.620</span>
+                                <span class="fw-bold" style="font-size:1.7em; color:#ff5722;">Rp{{ number_format($totalPembayaran, 0, ',', '.') }}</span>
                             </div>
                             <hr class="my-3" style="border-color: #fff; opacity:0.2;">
                         </div>
