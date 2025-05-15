@@ -21,6 +21,38 @@ class AdminMiddleware
         $user = Auth::guard('web')->user();
         $path = $request->path();
 
+        // Jika karyawan akses selain /karyawan, /karyawan/products, /karyawan/jenis-pengiriman, redirect ke karyawan.products
+        if ($user && $user->jabatan === 'karyawan' && !preg_match('#^karyawan($|/products$|/jenis-pengiriman$)#', $path)) {
+            return redirect()->route('be.karyawan.products');
+        }
+
+        // Jika non-karyawan akses /karyawan, redirect ke dashboard sesuai role
+        if ($user && $user->jabatan !== 'karyawan' && preg_match('#^karyawan(/|$)#', $path)) {
+            // Pemilik ke dashboard pemilik, apotekar ke distributor, selain itu ke admin
+            if ($user->jabatan === 'pemilik') {
+                return redirect()->route('be.pemilik.index');
+            } elseif ($user->jabatan === 'apotekar') {
+                return redirect()->route('be.apotekar.distributor');
+            } else {
+                return redirect()->route('be.admin.index');
+            }
+        }
+
+        // Jika pemilik akses selain /pemilik, redirect ke dashboard pemilik
+        if ($user && $user->jabatan === 'pemilik' && !preg_match('#^pemilik(/|$)#', $path)) {
+            return redirect()->route('be.pemilik.index');
+        }
+
+        // Jika non-pemilik akses /pemilik, redirect ke dashboard sesuai role
+        if ($user && $user->jabatan !== 'pemilik' && preg_match('#^pemilik(/|$)#', $path)) {
+            // Apotekar ke distributor, selain itu ke admin
+            if ($user->jabatan === 'apotekar') {
+                return redirect()->route('be.apotekar.distributor');
+            } else {
+                return redirect()->route('be.admin.index');
+            }
+        }
+
         // Jika apotekar akses /admin, redirect ke /apotekar
         if ($user && $user->jabatan === 'apotekar' && preg_match('#^admin(/|$)#', $path)) {
             return redirect()->route('be.apotekar.distributor');

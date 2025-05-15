@@ -138,7 +138,7 @@
                             <hr class="my-3" style="border-color: #fff; opacity:0.2;">
                         </div>
                         <div class="w-100" style="max-width:350px; margin-left:auto;">
-                            <button class="btn btn-lg w-100 mt-2" style="background:red; color:#fff; font-weight:bold;">Buat Pesanan</button>
+                            <button id="btn-buat-pesanan" class="btn btn-lg w-100 mt-2" style="background:red; color:#fff; font-weight:bold;">Buat Pesanan</button>
                         </div>
                         <div class="w-100 mt-2 text-start" style="max-width:350px;">
                             <small class="text-black-50">
@@ -160,5 +160,36 @@
     <script src="{{ asset('fe/js/plugins.js') }}"></script>
     <script src="{{ asset('fe/js/ajax-mail.js') }}"></script>
     <script src="{{ asset('fe/js/main.js') }}"></script>
+
+    <!-- Midtrans Snap.js -->
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
+    <script>
+    $(document).ready(function() {
+        $('#btn-buat-pesanan').on('click', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '{{ route("fe.checkout.pay") }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(res) {
+                    if(res.snapToken) {
+                        window.snap.pay(res.snapToken, {
+                            onSuccess: function(result){ window.location.reload(); },
+                            onPending: function(result){ window.location.reload(); },
+                            onError: function(result){ alert('Pembayaran gagal!'); }
+                        });
+                    } else {
+                        alert('Gagal mendapatkan token pembayaran.');
+                    }
+                },
+                error: function() {
+                    alert('Gagal memproses pembayaran.');
+                }
+            });
+        });
+    });
+    </script>
 </body>
 @endsection

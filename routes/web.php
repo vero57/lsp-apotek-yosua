@@ -41,7 +41,13 @@ Route::get('/contact', [ContactController::class, 'index'])->name('fe.contact');
 Route::get('/product-details', [ProductDetailsController::class, 'index'])->name('fe.product-details');
 Route::get('/shop', [ShopController::class, 'index'])->name('fe.shop');
 Route::get('/product/{id}', [App\Http\Controllers\ShopController::class, 'show'])->name('fe.product-details');
+// Tambahkan route untuk menambah ke keranjang (cart) via POST.
+Route::post('/cart/add', [\App\Http\Controllers\CartController::class, 'add'])->name('fe.cart.add');
+Route::post('/cart/delete', [\App\Http\Controllers\CartController::class, 'delete'])->name('fe.cart.delete');
+Route::post('/cart/process-checkout', [\App\Http\Controllers\CartController::class, 'processCheckout'])->name('fe.cart.processCheckout');
 
+// Route untuk proses pembayaran Midtrans (Snap)
+Route::post('/checkout/pay', [CheckoutController::class, 'pay'])->middleware('apotek')->name('fe.checkout.pay');
 // Route ke halaman login dan register (tampilan untuk Pelanggan)
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
@@ -107,6 +113,9 @@ Route::middleware('admin')->group(function () {
     Route::get('/admin/jenis-pengiriman/{id}/edit', [\App\Http\Controllers\EditJenisPengirimanController::class, 'edit'])->name('be.admin.jenispengiriman.edit');
     Route::put('/admin/jenis-pengiriman/{id}', [\App\Http\Controllers\EditJenisPengirimanController::class, 'update'])->name('be.admin.jenispengiriman.update');
     Route::delete('/admin/jenis-pengiriman/{id}', [\App\Http\Controllers\AddJenisPengirimanController::class, 'destroy'])->name('be.admin.jenispengiriman.destroy');
+
+    // Route ke halaman table penjualan
+    Route::get('/admin/penjualan', [\App\Http\Controllers\PenjualanController::class, 'index'])->name('be.admin.penjualan');
 });
 
 // ==================== ROUTE APOTEKAR (khusus jabatan apotekker) ====================
@@ -138,9 +147,19 @@ Route::middleware('admin')->prefix('apotekar')->name('be.apotekar.')->group(func
     Route::get('/pembelian-obat/{id}/detail', [\App\Http\Controllers\PembelianObatController::class, 'detail'])->name('pembelianobat.detail');
 });
 
-// Tambahkan route untuk menambah ke keranjang (cart) via POST.
-Route::post('/cart/add', [\App\Http\Controllers\CartController::class, 'add'])->name('fe.cart.add');
-Route::post('/cart/delete', [\App\Http\Controllers\CartController::class, 'delete'])->name('fe.cart.delete');
-Route::post('/cart/process-checkout', [\App\Http\Controllers\CartController::class, 'processCheckout'])->name('fe.cart.processCheckout');
+// ==================== ROUTE PEMILIK ====================
+Route::middleware('admin')->prefix('pemilik')->name('be.pemilik.')->group(function () {
+    Route::get('/', function () {
+        return view('be.pages.dashboard');
+    })->name('index');
+});
+
+// ==================== ROUTE KARYAWAN ====================
+Route::middleware('admin')->prefix('karyawan')->name('be.karyawan.')->group(function () {
+    Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index'])->name('products');
+    Route::get('/jenis-pengiriman', [\App\Http\Controllers\JenisPengirimanController::class, 'index'])->name('jenispengiriman');
+});
+
+
 
 
