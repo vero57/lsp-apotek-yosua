@@ -18,7 +18,8 @@ use App\Http\Controllers\{
     EditDistributorController,
     PembelianObatController,
     AddPembelianObat,
-    EditPembelianObatController
+    EditPembelianObatController,
+    StatusController
 };
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -36,6 +37,7 @@ Route::get('/cart', [CartController::class, 'index'])->middleware('apotek')->nam
 Route::get('/checkout', [CheckoutController::class, 'index'])->middleware('apotek');
 Route::get('/wishlist', [WishlistController::class, 'index'])->middleware('apotek')->name('fe.wishlist');
 Route::get('/my-account', [MyAccountController::class, 'index'])->middleware('apotek')->name('fe.my_account');
+Route::get('/status', [StatusController::class, 'index'])->middleware('apotek')->name('fe.status');
 Route::get('/checkout', [CheckoutController::class, 'index'])->middleware('apotek')->name('fe.checkout');
 Route::get('/contact', [ContactController::class, 'index'])->name('fe.contact');
 Route::get('/product-details', [ProductDetailsController::class, 'index'])->name('fe.product-details');
@@ -159,6 +161,12 @@ Route::middleware('admin')->prefix('karyawan')->name('be.karyawan.')->group(func
     Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index'])->name('products');
     Route::get('/jenis-pengiriman', [\App\Http\Controllers\JenisPengirimanController::class, 'index'])->name('jenispengiriman');
 });
+
+// Route untuk update profil pelanggan
+Route::post('/my-account/update', [MyAccountController::class, 'update'])->middleware('apotek')->name('fe.my_account.update');
+
+// Route Midtrans callback
+Route::post('/midtrans/callback', [CheckoutController::class, 'midtransCallback'])->name('midtrans.callback');
 
 
 

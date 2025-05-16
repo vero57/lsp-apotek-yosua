@@ -4,7 +4,6 @@
 <div class="page-content" style="padding: 24px;">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="h5 mb-0">Daftar Penjualan</h2>
-        {{-- Tombol tambah penjualan jika diperlukan --}}
         {{-- <a href="#" class="btn btn-primary">Tambah Penjualan</a> --}}
     </div>
     <div class="table-responsive">

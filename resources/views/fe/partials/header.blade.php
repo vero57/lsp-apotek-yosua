@@ -26,8 +26,8 @@
                                 <ul>
                                     @if(session('user_id'))
                                         <li><a href="{{ route('fe.my_account') }}">My Account</a></li>
-                                        <li class="{{ Request::routeIs('fe.wishlist') ? 'active' : '' }}">
-                                            <a href="{{ route('fe.wishlist') }}">Wishlist</a>
+                                        <li class="{{ Request::routeIs('fe.stauts') ? 'active' : '' }}">
+                                            <a href="{{ route('fe.wishlist') }}">My Order</a>
                                         </li>
                                         <li>
                                             <form action="{{ route('logout') }}" method="POST" style="display:inline;">

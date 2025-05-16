@@ -30,7 +30,7 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <div class="fw-bold" style="font-size: 1.5em">Donianto</div>
+                            <div class="fw-bold" style="font-size: 1.5em">Leonardo</div>
                             <div class="text-muted fs-6">0812-3456-7890</div>
                         </div>
                         <div class="flex-grow-1 d-flex flex-column align-items-center">
@@ -176,8 +176,23 @@
                 success: function(res) {
                     if(res.snapToken) {
                         window.snap.pay(res.snapToken, {
-                            onSuccess: function(result){ window.location.reload(); },
-                            onPending: function(result){ window.location.reload(); },
+                            onSuccess: function(result){
+                                $.post('{{ route("fe.checkout.pay") }}', {
+                                    _token: '{{ csrf_token() }}',
+                                    midtrans_result: JSON.stringify(result)
+                                }, function() {
+                                    window.location.reload();
+                                });
+                            },
+                            onPending: function(result){
+
+                                $.post('{{ route("fe.checkout.pay") }}', {
+                                    _token: '{{ csrf_token() }}',
+                                    midtrans_result: JSON.stringify(result)
+                                }, function() {
+                                    window.location.reload();
+                                });
+                            },
                             onError: function(result){ alert('Pembayaran gagal!'); }
                         });
                     } else {
@@ -191,5 +206,4 @@
         });
     });
     </script>
-</body>
 @endsection

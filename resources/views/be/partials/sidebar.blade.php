@@ -46,6 +46,9 @@
                     <li class="{{ request()->routeIs('be.admin.jenispengiriman') ? 'active' : '' }}">
                         <a href="{{ route('be.admin.jenispengiriman') }}"><i class="fa fa-truck"></i> <span> Jenis Pengiriman</span></a>
                     </li>
+                    <li class="{{ request()->routeIs('be.admin.penjualan') ? 'active' : '' }}">
+                        <a href="{{ route('be.admin.penjualan') }}"><i class="fa fa-shopping-bag"></i> <span> Penjualan Obat</span></a>
+                    </li>
                 @endif
             </ul>
         </div>
