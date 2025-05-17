@@ -39,7 +39,9 @@
                                     <!-- Table Head -->
                                     <thead>
                                         <tr>
-                                            <th class="number">#</th>
+                                            <th class="select">
+                                                <span class="custom-checkbox custom-checkbox-all" id="select-all-cart"></span>
+                                            </th>
                                             <th class="image">image</th>
                                             <th class="name">product name</th>
                                             <th class="qty">quantity</th>
@@ -52,7 +54,9 @@
                                     <tbody>
                                         @forelse($cartItems as $i => $item)
                                             <tr>
-                                                <td><span class="cart-number">{{ $i+1 }}</span></td>
+                                                <td>
+                                                    <span class="custom-checkbox cart-item-checkbox" data-id="{{ $item->id }}" data-checked="1"></span>
+                                                </td>
                                                 <td>
                                                     <a class="cart-pro-image" href="#">
                                                         <img alt="gambar obat " src="{{ $item->obat && $item->obat->foto1 ? asset('storage/' . $item->obat->foto1) : asset('fe/img/noimage.png') }}"/>
@@ -112,10 +116,12 @@
                                     <h5><span>Grand total</span><span>Rp{{ number_format($cartTotal, 0, ',', '.') }}</span></h5>
                                     <form id="checkout-form" action="{{ route('fe.cart.processCheckout') }}" method="POST">
                                         @csrf
-                                        @foreach($cartItems as $item)
-                                            <input type="hidden" name="cart_id[]" value="{{ $item->id }}">
-                                            <input type="hidden" name="jumlah_order[{{ $item->id }}]" id="jumlah_order_{{ $item->id }}" value="{{ $item->jumlah_order }}">
-                                        @endforeach
+                                        <div id="checkout-hidden-inputs">
+                                            @foreach($cartItems as $item)
+                                                <input type="hidden" name="cart_id[]" value="{{ $item->id }}" id="cart_id_{{ $item->id }}">
+                                                <input type="hidden" name="jumlah_order[{{ $item->id }}]" id="jumlah_order_{{ $item->id }}" value="{{ $item->jumlah_order }}">
+                                            @endforeach
+                                        </div>
                                         <button type="submit" class="button">process to checkout</button>
                                     </form>
                                 </div>
@@ -240,7 +246,106 @@
                     if (hiddenInput) hiddenInput.value = val;
                 });
             });
+
+            // Custom checkbox logic
+            function setCheckboxState(el, checked) {
+                if (checked) {
+                    el.classList.add('checked');
+                    el.setAttribute('data-checked', '1');
+                } else {
+                    el.classList.remove('checked');
+                    el.setAttribute('data-checked', '0');
+                }
+            }
+            // Init all item checkboxes as checked
+            document.querySelectorAll('.cart-item-checkbox').forEach(function(cb) {
+                setCheckboxState(cb, true);
+            });
+            // Init select all as checked if all checked
+            function updateSelectAllCheckbox() {
+                const all = document.querySelectorAll('.cart-item-checkbox');
+                const allChecked = Array.from(all).every(cb => cb.getAttribute('data-checked') === '1');
+                const selectAll = document.getElementById('select-all-cart');
+                setCheckboxState(selectAll, allChecked);
+            }
+            // Toggle item checkbox
+            document.querySelectorAll('.cart-item-checkbox').forEach(function(cb) {
+                cb.addEventListener('click', function() {
+                    const checked = cb.getAttribute('data-checked') === '1';
+                    setCheckboxState(cb, !checked);
+                    updateSelectAllCheckbox();
+                });
+            });
+            // Toggle select all
+            const selectAll = document.getElementById('select-all-cart');
+            if (selectAll) {
+                setCheckboxState(selectAll, true);
+                selectAll.addEventListener('click', function() {
+                    const checked = selectAll.getAttribute('data-checked') === '1';
+                    document.querySelectorAll('.cart-item-checkbox').forEach(function(cb) {
+                        setCheckboxState(cb, !checked);
+                    });
+                    setCheckboxState(selectAll, !checked);
+                });
+            }
+            // Update select all on item change
+            document.querySelectorAll('.cart-item-checkbox').forEach(function(cb) {
+                cb.addEventListener('click', updateSelectAllCheckbox);
+            });
+
+            // Saat submit checkout, hanya kirim input hidden untuk item yang dicentang
+            const checkoutForm = document.getElementById('checkout-form');
+            if (checkoutForm) {
+                checkoutForm.addEventListener('submit', function(e) {
+                    // Ambil semua id item yang dicentang
+                    const checkedIds = Array.from(document.querySelectorAll('.cart-item-checkbox'))
+                        .filter(cb => cb.getAttribute('data-checked') === '1')
+                        .map(cb => cb.getAttribute('data-id'));
+                    // Hapus semua input hidden cart_id dan jumlah_order yang tidak dicentang
+                    @foreach($cartItems as $item)
+                        if (!checkedIds.includes('{{ $item->id }}')) {
+                            var inputCartId = document.getElementById('cart_id_{{ $item->id }}');
+                            var inputJumlah = document.getElementById('jumlah_order_{{ $item->id }}');
+                            if (inputCartId) inputCartId.parentNode.removeChild(inputCartId);
+                            if (inputJumlah) inputJumlah.parentNode.removeChild(inputJumlah);
+                        }
+                    @endforeach
+                    // Jika tidak ada yang dicentang, cegah submit
+                    if (checkedIds.length === 0) {
+                        e.preventDefault();
+                        alert('Pilih minimal satu produk untuk checkout.');
+                    }
+                });
+            }
         });
         </script>
+        <style>
+        .custom-checkbox {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            border: 2px solid #aaa;
+            border-radius: 5px;
+            background: #fff;
+            position: relative;
+            cursor: pointer;
+            vertical-align: middle;
+        }
+        .custom-checkbox.checked {
+            background: #ff5252;
+            border-color: #ff5252;
+        }
+        .custom-checkbox.checked:after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 2px;
+            width: 6px;
+            height: 12px;
+            border: solid #fff;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+        </style>
     </body>
 @endsection

@@ -76,6 +76,16 @@ class CartController extends Controller
         }
         $cartIds = $request->input('cart_id', []);
         $jumlahOrders = $request->input('jumlah_order', []);
+
+        // Ambil hanya cart_id yang tidak disabled (hanya yang dikirim browser)
+        // Pastikan $cartIds adalah array numerik (bisa jadi ada null jika semua disabled)
+        $cartIds = array_filter($cartIds);
+
+        // Hapus semua keranjang user yang tidak dipilih dari session (sementara, agar checkout hanya menampilkan yang dipilih)
+        // Simpan cart_id terpilih ke session
+        session(['checkout_cart_ids' => $cartIds]);
+
+        // Update jumlah_order hanya untuk cart yang dipilih
         foreach ($cartIds as $cartId) {
             $cart = \App\Models\Keranjang::where('id', $cartId)
                 ->where('id_pelanggan', $userId)

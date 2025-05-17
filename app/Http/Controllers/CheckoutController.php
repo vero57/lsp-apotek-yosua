@@ -22,9 +22,18 @@ class CheckoutController extends Controller
         $cartItems = [];
         $cartTotal = 0;
         if (session('user_id')) {
-            $cartItems = \App\Models\Keranjang::with('obat')
-                ->where('id_pelanggan', session('user_id'))
-                ->get();
+            // Ambil hanya cart yang dipilih (jika ada di session)
+            $selectedCartIds = session('checkout_cart_ids', []);
+            if (!empty($selectedCartIds)) {
+                $cartItems = \App\Models\Keranjang::with('obat')
+                    ->where('id_pelanggan', session('user_id'))
+                    ->whereIn('id', $selectedCartIds)
+                    ->get();
+            } else {
+                $cartItems = \App\Models\Keranjang::with('obat')
+                    ->where('id_pelanggan', session('user_id'))
+                    ->get();
+            }
             $cartTotal = $cartItems->sum('subtotal');
         }
         $jenisPengiriman = JenisPengiriman::all();
