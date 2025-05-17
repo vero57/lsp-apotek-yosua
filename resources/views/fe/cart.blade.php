@@ -55,7 +55,7 @@
                                                 <td><span class="cart-number">{{ $i+1 }}</span></td>
                                                 <td>
                                                     <a class="cart-pro-image" href="#">
-                                                        <img alt="" src="{{ $item->obat && $item->obat->foto1 ? asset('storage/' . $item->obat->foto1) : asset('fe/img/noimage.png') }}"/>
+                                                        <img alt="gambar obat " src="{{ $item->obat && $item->obat->foto1 ? asset('storage/' . $item->obat->foto1) : asset('fe/img/noimage.png') }}"/>
                                                     </a>
                                                 </td>
                                                 <td>

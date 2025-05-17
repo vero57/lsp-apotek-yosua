@@ -22,4 +22,19 @@ class Penjualan extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function metodeBayar()
+    {
+        return $this->belongsTo(MetodeBayar::class, 'id_metode_bayar');
+    }
+
+    public function pelanggan()
+    {
+        return $this->belongsTo(Pelanggan::class, 'id_pelanggan');
+    }
+
+    public function jenisPengiriman()
+    {
+        return $this->belongsTo(\App\Models\JenisPengiriman::class, 'id_jenis_kirim');
+    }
 }

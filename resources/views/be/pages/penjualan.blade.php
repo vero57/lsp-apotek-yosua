@@ -21,68 +21,61 @@
                     <th>Keterangan Status</th>
                     <th>Jenis Pengiriman</th>
                     <th>Pelanggan</th>
-                    <th>Created At</th>
-                    <th>Updated At</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                @php
-                $penjualan = [
-                    [
-                        'metode_bayar' => 'Transfer Bank',
-                        'tgl_penjualan' => '2024-06-01',
-                        'url_resep' => null,
-                        'ongkos_kirim' => 10000,
-                        'biaya_app' => 2000,
-                        'total_bayar' => 50000,
-                        'status_order' => 'Selesai',
-                        'keterangan_status' => 'Pesanan diterima',
-                        'jenis_kirim' => 'Reguler',
-                        'pelanggan' => 'Budi Santoso',
-                        'created_at' => '2024-06-01 10:00:00',
-                        'updated_at' => '2024-06-01 12:00:00',
-                    ],
-                    [
-                        'metode_bayar' => 'COD',
-                        'tgl_penjualan' => '2024-06-02',
-                        'url_resep' => 'resep/12345.jpg',
-                        'ongkos_kirim' => 12000,
-                        'biaya_app' => 2500,
-                        'total_bayar' => 75000,
-                        'status_order' => 'Pending',
-                        'keterangan_status' => 'Menunggu pembayaran',
-                        'jenis_kirim' => 'Express',
-                        'pelanggan' => 'Siti Aminah',
-                        'created_at' => '2024-06-02 09:30:00',
-                        'updated_at' => '2024-06-02 09:45:00',
-                    ],
-                ];
-                @endphp
+                {{-- Ambil data penjualan dari controller --}}
                 @forelse($penjualan as $i => $item)
                 <tr>
                     <td>{{ $i+1 }}</td>
-                    <td>{{ $item['metode_bayar'] }}</td>
-                    <td>{{ $item['tgl_penjualan'] }}</td>
+                    <td>{{ $item->metodeBayar ? $item->metodeBayar->metode_pembayaran : '-' }}</td>
+                    <td>{{ $item->tgl_penjualan }}</td>
                     <td>
-                        @if($item['url_resep'])
-                            <a href="{{ asset('storage/' . $item['url_resep']) }}" target="_blank">Lihat Resep</a>
+                        @if($item->url_resep)
+                            <a href="{{ asset('storage/' . $item->url_resep) }}" target="_blank">Lihat Resep</a>
                         @else
                             <span class="text-muted">-</span>
                         @endif
                     </td>
-                    <td>{{ $item['ongkos_kirim'] }}</td>
-                    <td>{{ $item['biaya_app'] }}</td>
-                    <td>{{ $item['total_bayar'] }}</td>
-                    <td>{{ $item['status_order'] }}</td>
-                    <td>{{ $item['keterangan_status'] }}</td>
-                    <td>{{ $item['jenis_kirim'] }}</td>
-                    <td>{{ $item['pelanggan'] }}</td>
-                    <td>{{ $item['created_at'] }}</td>
-                    <td>{{ $item['updated_at'] }}</td>
+                    <td>{{ $item->ongkos_kirim }}</td>
+                    <td>{{ $item->biaya_app }}</td>
+                    <td>{{ $item->total_bayar }}</td>
+                    <td>
+                        <form id="status-form-{{ $item->id }}" action="{{ route('penjualan.updateStatus') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $item->id }}">
+                            <select name="status" class="form-control form-control-sm d-inline-block" style="width:auto;display:inline-block;">
+                                @foreach($enum as $status)
+                                    <option value="{{ $status }}" @if($item->status_order == $status) selected @endif>
+                                        {{ $status }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </form>
+                    </td>
+                    <td>{{ $item->keterangan_status }}</td>
+                    <td>
+                        {{ $item->jenisPengiriman ? $item->jenisPengiriman->nama_jenis_pengiriman : '-' }}
+                    </td>
+                    <td>{{ $item->pelanggan ? $item->pelanggan->nama_pelanggan : '-' }}</td>
+                    <td>
+                        <button type="submit" class="btn btn-success btn-sm" title="Simpan Status"
+                            form="status-form-{{ $item->id }}">
+                            <i class="fa fa-check"></i>
+                        </button>
+                        <form action="{{ route('penjualan.cancelOrder') }}" method="POST" style="display:inline;" class="cancel-order-form">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $item->id }}">
+                            <button type="submit" class="btn btn-danger btn-sm" title="Batalkan Pesanan">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </form>
+                    </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="13" class="text-center">Belum ada data penjualan.</td>
+                    <td colspan="12" class="text-center">Belum ada data penjualan.</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -90,3 +83,6 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+@endpush

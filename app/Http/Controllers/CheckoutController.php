@@ -45,11 +45,38 @@ class CheckoutController extends Controller
             $email = $user ? $user->email : null;
 
             if ($channel && $email) {
-                \App\Models\MetodeBayar::create([
+                // Insert ke metode_bayar
+                $metodeBayar = \App\Models\MetodeBayar::create([
                     'metode_pembayaran' => $channel,
                     'tempat_bayar' => $channel,
                     'no_rekening' => $email,
                     'url_logo' => null,
+                ]);
+
+                // Insert ke penjualan
+                // Ambil data cart dan biaya
+                $cartItems = \App\Models\Keranjang::with('obat')
+                    ->where('id_pelanggan', $userId)
+                    ->get();
+                $cartTotal = $cartItems->sum('subtotal');
+                $proteksiProduk = 500;
+                $subtotalPengiriman = 10000;
+                $biayaLayanan = 2000;
+                $totalPembayaran = $cartTotal + $proteksiProduk + $subtotalPengiriman + $biayaLayanan;
+
+                \App\Models\Penjualan::create([
+                    'id_metode_bayar' => $metodeBayar->id,
+                    'tgl_penjualan' => now(),
+                    'url_resep' => null, // atau isi sesuai kebutuhan
+                    'ongkos_kirim' => $subtotalPengiriman,
+                    'biaya_app' => $biayaLayanan,
+                    'total_bayar' => $totalPembayaran,
+                    'status_order' => 'Menunggu Konfirmasi', // ubah default ke Menunggu Konfirmasi
+                    'keterangan_status' => 'Pesanan diterima', // atau isi sesuai kebutuhan
+                    'id_jenis_kirim' => null, // isi jika ada
+                    'id_pelanggan' => $userId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ]);
             }
             return response()->json(['success' => true]);
