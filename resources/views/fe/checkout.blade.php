@@ -111,6 +111,24 @@
                     $biayaLayanan = 2000;
                     $totalPembayaran = $cartTotal + $proteksiProduk + $subtotalPengiriman + $biayaLayanan;
                 @endphp
+
+                <!-- KOTAK BARU DIMULAI -->
+                <div class="w-100 mb-4 p-4 bg-white rounded text-black">
+                    <!-- Title mirip kotak "Obat yang dipesan" -->
+                    <div class="fw-bold mb-3" style="font-size: 2em; color:red;">Resep untuk obat keras</div>
+                    <div class="text-black-50 mb-3" style="font-size:1.1em;">
+                        Untuk membeli obat keras, kamu harus menyertakan resep dokter
+                    </div>
+                    <form id="form-upload-resep" enctype="multipart/form-data">
+                        <div class="mb-2">
+                            <label for="resep_file" class="form-label fw-semibold">Upload Resep Dokter (jpg, jpeg, png)</label>
+                            <input type="file" class="form-control" id="resep_file" name="resep_file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" required>
+                        </div>
+                        <div id="preview-resep" class="mt-2"></div>
+                    </form>
+                </div>
+                <!-- KOTAK BARU SELESAI -->
+
                 <div class="w-100 mb-4 p-4 bg-light rounded text-black">
                     <!-- Kolom 3: Ringkasan Pembayaran -->
                     <div class="d-flex flex-column">
@@ -204,6 +222,26 @@
                 }
             });
         });
+    });
+
+    // Preview resep image (non-GIF only)
+    $('#resep_file').on('change', function(e) {
+        const file = e.target.files[0];
+        const preview = $('#preview-resep');
+        preview.empty();
+        if (file) {
+            const ext = file.name.split('.').pop().toLowerCase();
+            if (['jpg', 'jpeg', 'png'].includes(ext)) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    preview.html('<img src="'+ev.target.result+'" alt="Preview Resep" style="max-width:200px;max-height:200px;border-radius:8px;border:1px solid #ccc;">');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.html('<span class="text-danger">Format file tidak didukung. Hanya jpg, jpeg, png.</span>');
+                $(this).val('');
+            }
+        }
     });
     </script>
 @endsection
