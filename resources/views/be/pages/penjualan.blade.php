@@ -11,6 +11,7 @@
             <thead class="thead-light">
                 <tr>
                     <th>No</th>
+                    <th>ID</th>
                     <th>Metode Pembayaran</th>
                     <th>Tanggal Penjualan</th>
                     <th>URL Resep</th>
@@ -29,6 +30,7 @@
                 @forelse($penjualan as $i => $item)
                 <tr>
                     <td>{{ $i+1 }}</td>
+                    <td>{{ $item->id }}</td>
                     <td>{{ $item->metodeBayar ? $item->metodeBayar->metode_pembayaran : '-' }}</td>
                     <td>{{ $item->tgl_penjualan }}</td>
                     <td>
@@ -56,7 +58,7 @@
                     </td>
                     <td>{{ $item->keterangan_status }}</td>
                     <td>
-                        {{ $item->jenisPengiriman ? $item->jenisPengiriman->nama_jenis_pengiriman : '-' }}
+                        {{ $item->jenisPengiriman ? $item->jenisPengiriman->jenis_kirim : '-' }}
                     </td>
                     <td>{{ $item->pelanggan ? $item->pelanggan->nama_pelanggan : '-' }}</td>
                     <td>
@@ -75,7 +77,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="12" class="text-center">Belum ada data penjualan.</td>
+                    <td colspan="13" class="text-center">Belum ada data penjualan.</td>
                 </tr>
                 @endforelse
             </tbody>

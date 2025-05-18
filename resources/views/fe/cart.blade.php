@@ -186,6 +186,26 @@
                 });
             });
 
+            // Update subtotal and grand total when quantity or checkbox changes
+            function updateTotals() {
+                let total = 0;
+                document.querySelectorAll('.cart-qty-input').forEach(function(input) {
+                    const row = input.closest('tr');
+                    const cb = row.querySelector('.cart-item-checkbox');
+                    if (cb && cb.getAttribute('data-checked') === '1') {
+                        const qty = parseInt(input.value) || 1;
+                        const price = parseInt(input.getAttribute('data-price')) || 0;
+                        total += qty * price;
+                    }
+                });
+                document.querySelectorAll('.cart-checkout-process span:last-child').forEach(function(span) {
+                    span.textContent = 'Rp' + total.toLocaleString('id-ID');
+                });
+                document.querySelectorAll('.cart-checkout-process p span:last-child').forEach(function(span) {
+                    span.textContent = 'Rp' + total.toLocaleString('id-ID');
+                });
+            }
+
             // Arrow button logic with fa-angle icons
             document.querySelectorAll('.qty-btn-minus').forEach(function(btn) {
                 btn.addEventListener('click', function() {
@@ -206,7 +226,7 @@
                 });
             });
 
-            // Update subtotal and grand total when quantity changes
+            // Update subtotal cell and totals when quantity changes
             document.querySelectorAll('.cart-qty-input').forEach(function(input) {
                 input.addEventListener('input', function() {
                     let qty = parseInt(this.value) || 1;
@@ -221,19 +241,7 @@
                     if (subtotalCell) {
                         subtotalCell.textContent = 'Rp' + subtotal.toLocaleString('id-ID');
                     }
-                    // Update grand total
-                    let total = 0;
-                    document.querySelectorAll('.cart-qty-input').forEach(function(qtyInput) {
-                        const q = parseInt(qtyInput.value) || 1;
-                        const p = parseInt(qtyInput.getAttribute('data-price')) || 0;
-                        total += q * p;
-                    });
-                    document.querySelectorAll('.cart-checkout-process span:last-child').forEach(function(span) {
-                        span.textContent = 'Rp' + total.toLocaleString('id-ID');
-                    });
-                    document.querySelectorAll('.cart-checkout-process p span:last-child').forEach(function(span) {
-                        span.textContent = 'Rp' + total.toLocaleString('id-ID');
-                    });
+                    updateTotals();
                 });
             });
 
@@ -274,6 +282,7 @@
                     const checked = cb.getAttribute('data-checked') === '1';
                     setCheckboxState(cb, !checked);
                     updateSelectAllCheckbox();
+                    updateTotals();
                 });
             });
             // Toggle select all
@@ -286,12 +295,16 @@
                         setCheckboxState(cb, !checked);
                     });
                     setCheckboxState(selectAll, !checked);
+                    updateTotals();
                 });
             }
             // Update select all on item change
             document.querySelectorAll('.cart-item-checkbox').forEach(function(cb) {
                 cb.addEventListener('click', updateSelectAllCheckbox);
             });
+
+            // Update total on page load
+            updateTotals();
 
             // Saat submit checkout, hanya kirim input hidden untuk item yang dicentang
             const checkoutForm = document.getElementById('checkout-form');

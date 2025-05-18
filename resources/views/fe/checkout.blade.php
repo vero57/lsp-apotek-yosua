@@ -55,7 +55,7 @@
                     @forelse($cartItems as $item)
                         <div class="row align-items-center py-2" style="border-bottom:1px solid #f0f0f0;">
                             <div class="col-6 d-flex align-items-center">
-                                <img src="{{ $item->obat && $item->obat->foto1 ? asset('storage/' . $item->obat->foto1) : asset('fe/img/noimage.png') }}" alt="obat" style="width:48px;height:48px;object-fit:cover;border-radius:8px;margin-right:12px;">
+                                <img src="{{ $item->obat && $item->obat->foto1 ? asset('storage/' . $item->obat->foto1) : asset('fe/img/noimage.png') }}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;margin-right:12px;">
                                 <span>{{ $item->obat ? $item->obat->nama_obat : '-' }}</span>
                             </div>
                             <div class="col-2 text-center">
@@ -81,7 +81,8 @@
                             <div class="p-3 bg-light rounded d-flex flex-column">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <span class="fw-semibold fs-5">Opsi pengiriman</span>
-                                    <select class="form-select fw-bold fs-5 ms-2" style="width:auto;min-width:120px;">
+                                    <select id="select-jenis-pengiriman" class="form-select fw-bold fs-5 ms-2" style="width:auto;min-width:180px;">
+                                        <option value="">Pilih opsi pengiriman</option>
                                         @foreach($jenisPengiriman as $jenis)
                                             <option value="{{ $jenis->id }}">{{ $jenis->jenis_kirim }}</option>
                                         @endforeach
@@ -110,8 +111,24 @@
                     $subtotalPengiriman = 10000;
                     $biayaLayanan = 2000;
                     $totalPembayaran = $cartTotal + $proteksiProduk + $subtotalPengiriman + $biayaLayanan;
+
+                    // Cek apakah ada obat keras di cart berdasarkan relasi idjenis
+                    $adaObatKeras = false;
+                    foreach ($cartItems as $item) {
+                        // Pastikan relasi jenisObat sudah eager loaded
+                        if (
+                            $item->obat &&
+                            $item->obat->jenisObat &&
+                            isset($item->obat->jenisObat->jenis) &&
+                            strtolower($item->obat->jenisObat->jenis) === 'obat keras'
+                        ) {
+                            $adaObatKeras = true;
+                            break;
+                        }
+                    }
                 @endphp
 
+                @if($adaObatKeras)
                 <!-- KOTAK BARU DIMULAI -->
                 <div class="w-100 mb-4 p-4 bg-white rounded text-black">
                     <!-- Title mirip kotak "Obat yang dipesan" -->
@@ -121,13 +138,14 @@
                     </div>
                     <form id="form-upload-resep" enctype="multipart/form-data">
                         <div class="mb-2">
-                            <label for="resep_file" class="form-label fw-semibold">Upload Resep Dokter (jpg, jpeg, png)</label>
+                            <label for="resep_file" class="form-label fw-semibold">Upload Resep Dokter (jpg, jpeg, png) <span class="text-danger">*</span></label>
                             <input type="file" class="form-control" id="resep_file" name="resep_file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" required>
                         </div>
                         <div id="preview-resep" class="mt-2"></div>
                     </form>
                 </div>
                 <!-- KOTAK BARU SELESAI -->
+                @endif
 
                 <div class="w-100 mb-4 p-4 bg-light rounded text-black">
                     <!-- Kolom 3: Ringkasan Pembayaran -->
@@ -156,7 +174,7 @@
                             <hr class="my-3" style="border-color: #fff; opacity:0.2;">
                         </div>
                         <div class="w-100" style="max-width:350px; margin-left:auto;">
-                            <button id="btn-buat-pesanan" class="btn btn-lg w-100 mt-2" style="background:red; color:#fff; font-weight:bold;">Buat Pesanan</button>
+                            <button id="btn-buat-pesanan" class="btn btn-lg w-100 mt-2" style="background: #ccc; color:#fff; font-weight:bold;" disabled>Buat Pesanan</button>
                         </div>
                         <div class="w-100 mt-2 text-start" style="max-width:350px;">
                             <small class="text-black-50">
@@ -183,32 +201,113 @@
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
     <script>
     $(document).ready(function() {
+        // --- VARIABEL UNTUK VALIDASI ---
+        var adaObatKeras = {{ $adaObatKeras ? 'true' : 'false' }};
+        var resepValid = !adaObatKeras; // jika tidak ada obat keras, resep dianggap valid
+        var pengirimanValid = false;
+
+        // --- FUNGSI CEK VALIDASI ---
+        function updateButtonState() {
+            if (resepValid && pengirimanValid) {
+                $('#btn-buat-pesanan').prop('disabled', false).css('background', 'red').css('cursor', 'pointer');
+            } else {
+                $('#btn-buat-pesanan').prop('disabled', true).css('background', '#ccc').css('cursor', 'not-allowed');
+            }
+        }
+
+        // --- EVENT PILIHAN PENGIRIMAN ---
+        $('#select-jenis-pengiriman').on('change', function() {
+            pengirimanValid = $(this).val() !== '';
+            updateButtonState();
+        });
+
+        // --- EVENT UPLOAD RESEP (WAJIB JIKA OBAT KERAS) ---
+        $('#resep_file').on('change', function(e) {
+            const file = e.target.files[0];
+            const preview = $('#preview-resep');
+            preview.empty();
+            if (file) {
+                const ext = file.name.split('.').pop().toLowerCase();
+                if (['jpg', 'jpeg', 'png'].includes(ext)) {
+                    const reader = new FileReader();
+                    reader.onload = function(ev) {
+                        preview.html('<img src="'+ev.target.result+'" alt="Preview Resep" style="max-width:200px;max-height:200px;border-radius:8px;border:1px solid #ccc;">');
+                    };
+                    reader.readAsDataURL(file);
+                    resepValid = true;
+                } else {
+                    preview.html('<span class="text-danger">Format file tidak didukung. Hanya jpg, jpeg, png.</span>');
+                    $(this).val('');
+                    resepValid = false;
+                }
+            } else {
+                resepValid = false;
+            }
+            updateButtonState();
+        });
+
+        // --- INISIALISASI BUTTON STATE ---
+        updateButtonState();
+
+        // --- HANDLE KLIK BUTTON BUAT PESANAN ---
         $('#btn-buat-pesanan').on('click', function(e) {
             e.preventDefault();
+            if (!resepValid || !pengirimanValid) return;
+
+            var formData = new FormData();
+            formData.append('_token', '{{ csrf_token() }}');
+            // Tambahkan id_jenis_kirim ke formData
+            formData.append('id_jenis_kirim', $('#select-jenis-pengiriman').val());
+            // Jika ada file resep, tambahkan ke formData
+            var resepInput = $('#resep_file')[0];
+            if (resepInput && resepInput.files.length > 0) {
+                formData.append('resep_file', resepInput.files[0]);
+            }
             $.ajax({
                 url: '{{ route("fe.checkout.pay") }}',
                 type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}'
-                },
+                data: formData,
+                processData: false,
+                contentType: false,
                 success: function(res) {
                     if(res.snapToken) {
                         window.snap.pay(res.snapToken, {
                             onSuccess: function(result){
-                                $.post('{{ route("fe.checkout.pay") }}', {
-                                    _token: '{{ csrf_token() }}',
-                                    midtrans_result: JSON.stringify(result)
-                                }, function() {
-                                    window.location.reload();
+                                var confirmData = new FormData();
+                                confirmData.append('_token', '{{ csrf_token() }}');
+                                confirmData.append('midtrans_result', JSON.stringify(result));
+                                confirmData.append('id_jenis_kirim', $('#select-jenis-pengiriman').val());
+                                if (resepInput && resepInput.files.length > 0) {
+                                    confirmData.append('resep_file', resepInput.files[0]);
+                                }
+                                $.ajax({
+                                    url: '{{ route("fe.checkout.pay") }}',
+                                    type: 'POST',
+                                    data: confirmData,
+                                    processData: false,
+                                    contentType: false,
+                                    success: function() {
+                                        window.location.reload();
+                                    }
                                 });
                             },
                             onPending: function(result){
-
-                                $.post('{{ route("fe.checkout.pay") }}', {
-                                    _token: '{{ csrf_token() }}',
-                                    midtrans_result: JSON.stringify(result)
-                                }, function() {
-                                    window.location.reload();
+                                var confirmData = new FormData();
+                                confirmData.append('_token', '{{ csrf_token() }}');
+                                confirmData.append('midtrans_result', JSON.stringify(result));
+                                confirmData.append('id_jenis_kirim', $('#select-jenis-pengiriman').val());
+                                if (resepInput && resepInput.files.length > 0) {
+                                    confirmData.append('resep_file', resepInput.files[0]);
+                                }
+                                $.ajax({
+                                    url: '{{ route("fe.checkout.pay") }}',
+                                    type: 'POST',
+                                    data: confirmData,
+                                    processData: false,
+                                    contentType: false,
+                                    success: function() {
+                                        window.location.reload();
+                                    }
                                 });
                             },
                             onError: function(result){ alert('Pembayaran gagal!'); }

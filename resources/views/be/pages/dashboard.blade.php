@@ -33,10 +33,10 @@
             </div>
             <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
                 <div class="dash-widget">
-                    <span class="dash-widget-bg4"><i class="fa fa-heartbeat" aria-hidden="true"></i></span>
+                    <span class="dash-widget-bg4"><i class="fa fa-money" aria-hidden="true"></i></span>
                     <div class="dash-widget-info text-right">
-                        <h3>618</h3>
-                        <span class="widget-title4">Pending <i class="fa fa-check" aria-hidden="true"></i></span>
+                        <h3>{{ \App\Models\Penjualan::whereNotIn('status_order', ['Dibatalkan Pelanggan', 'Dibatalkan Penjual'])->count() }}</h3>
+                        <span class="widget-title4">Transaksi <i class="fa fa-check" aria-hidden="true"></i></span>
                     </div>
                 </div>
             </div>

@@ -53,6 +53,17 @@ class CheckoutController extends Controller
             $channel = $paymentType;
             $email = $user ? $user->email : null;
 
+            // --- Tambahan: handle upload file resep ---
+            $urlResep = null;
+            if ($request->hasFile('resep_file')) {
+                $file = $request->file('resep_file');
+                $urlResep = $file->store('resep', 'public');
+            }
+            // --- End tambahan ---
+
+            // Ambil id_jenis_kirim dari request
+            $idJenisKirim = $request->input('id_jenis_kirim');
+
             if ($channel && $email) {
                 // Insert ke metode_bayar
                 $metodeBayar = \App\Models\MetodeBayar::create([
@@ -64,8 +75,10 @@ class CheckoutController extends Controller
 
                 // Insert ke penjualan
                 // Ambil data cart dan biaya
+                $selectedCartIds = session('checkout_cart_ids', []);
                 $cartItems = \App\Models\Keranjang::with('obat')
                     ->where('id_pelanggan', $userId)
+                    ->whereIn('id', $selectedCartIds)
                     ->get();
                 $cartTotal = $cartItems->sum('subtotal');
                 $proteksiProduk = 500;
@@ -76,13 +89,13 @@ class CheckoutController extends Controller
                 \App\Models\Penjualan::create([
                     'id_metode_bayar' => $metodeBayar->id,
                     'tgl_penjualan' => now(),
-                    'url_resep' => null, // atau isi sesuai kebutuhan
+                    'url_resep' => $urlResep,
                     'ongkos_kirim' => $subtotalPengiriman,
                     'biaya_app' => $biayaLayanan,
                     'total_bayar' => $totalPembayaran,
-                    'status_order' => 'Menunggu Konfirmasi', // ubah default ke Menunggu Konfirmasi
-                    'keterangan_status' => 'Pesanan diterima', // atau isi sesuai kebutuhan
-                    'id_jenis_kirim' => null, // isi jika ada
+                    'status_order' => 'Menunggu Konfirmasi',
+                    'keterangan_status' => 'Pesanan diterima',
+                    'id_jenis_kirim' => $idJenisKirim, // <-- simpan id_jenis_kirim
                     'id_pelanggan' => $userId,
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -100,9 +113,19 @@ class CheckoutController extends Controller
         // Ambil data user dan cart
         $userId = session('user_id');
         $user = \App\Models\Pelanggan::find($userId);
-        $cartItems = \App\Models\Keranjang::with('obat')
-            ->where('id_pelanggan', $userId)
-            ->get();
+
+        // Ambil hanya cart yang dipilih (checkout_cart_ids)
+        $selectedCartIds = session('checkout_cart_ids', []);
+        if (!empty($selectedCartIds)) {
+            $cartItems = \App\Models\Keranjang::with('obat')
+                ->where('id_pelanggan', $userId)
+                ->whereIn('id', $selectedCartIds)
+                ->get();
+        } else {
+            $cartItems = \App\Models\Keranjang::with('obat')
+                ->where('id_pelanggan', $userId)
+                ->get();
+        }
         $cartTotal = $cartItems->sum('subtotal');
 
         // Komponen biaya lain
@@ -124,7 +147,7 @@ class CheckoutController extends Controller
             // Anda bisa menambahkan item_details jika ingin
         ];
 
-        $snapToken = Snap::getSnapToken($params);
+        $snapToken = \Midtrans\Snap::getSnapToken($params);
 
         // Simpan order_id ke session untuk referensi callback
         session(['midtrans_order_id' => $params['transaction_details']['order_id']]);
