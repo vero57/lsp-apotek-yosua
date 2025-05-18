@@ -11,7 +11,6 @@
                         <img alt="{{ $product->nama_obat }}"
                              src="{{ $product->foto1 ? asset('storage/' . ltrim($product->foto1, '/')) : asset('fe/img/product/default.jpg') }}"/>
                     </a>
-                    <a class="wishlist" href="#"><i class="fa fa-heart-o"></i></a>
                     @if($loop->first)
                         <span class="label">New</span>
                     @endif

@@ -30,16 +30,20 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
-                            <div class="fw-bold" style="font-size: 1.5em">Leonardo</div>
-                            <div class="text-muted fs-6">0812-3456-7890</div>
+                            <div class="fw-bold" style="font-size: 1.5em">
+                                {{ $pelanggan->nama_pelanggan ?? '-' }}
+                            </div>
+                            <div class="text-muted fs-6">
+                                {{ $pelanggan->no_telp ?? '-' }}
+                            </div>
                         </div>
                         <div class="flex-grow-1 d-flex flex-column align-items-center">
-                            <span class="fs-5 text-center w-100 text-break" style="max-width: 400px;">
-                                Jl. Raya Karadenan No.7, Karadenan, Kec. Cibinong, Kabupaten Bogor, Jawa Barat 16111
+                            <span id="alamat-pengiriman" class="fs-5 text-center w-100 text-break" style="max-width: 400px;">
+                                {{ $pelanggan->alamat1 ?? '-' }}
                             </span>
                         </div>
                         <div class="text-end" style="min-width:110px;">
-                            <a href="#" class="ms-2 text-primary text-decoration-underline fs-6" style="font-size:1em;">Ubah alamat</a>
+                            <a href="#" id="btn-ubah-alamat" class="ms-2 text-primary text-decoration-underline fs-6" style="font-size:1em;">Ubah alamat</a>
                         </div>
                     </div>
                 </div>
@@ -321,6 +325,19 @@
                 }
             });
         });
+
+        // Tampilkan modal saat klik "Ubah alamat"
+        $('#btn-ubah-alamat').on('click', function(e) {
+            e.preventDefault();
+            $('#modalPilihAlamat').modal('show');
+        });
+
+        // Pilih alamat dari modal
+        $('.pilih-alamat').on('click', function() {
+            var alamat = $(this).data('alamat');
+            $('#alamat-pengiriman').text(alamat);
+            $('#modalPilihAlamat').modal('hide');
+        });
     });
 
     // Preview resep image (non-GIF only)
@@ -343,4 +360,35 @@
         }
     });
     </script>
+
+    {{-- Modal Pilih Alamat --}}
+    <div class="modal fade" id="modalPilihAlamat" tabindex="-1" aria-labelledby="modalPilihAlamatLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalPilihAlamatLabel">Pilih Alamat Pengiriman</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+          </div>
+          <div class="modal-body">
+            <div class="list-group">
+              @if($pelanggan->alamat1)
+                <button type="button" class="list-group-item list-group-item-action pilih-alamat" data-alamat="{{ $pelanggan->alamat1 }}">
+                    Alamat 1: {{ $pelanggan->alamat1 }}
+                </button>
+              @endif
+              @if($pelanggan->alamat2)
+                <button type="button" class="list-group-item list-group-item-action pilih-alamat" data-alamat="{{ $pelanggan->alamat2 }}">
+                    Alamat 2: {{ $pelanggan->alamat2 }}
+                </button>
+              @endif
+              @if($pelanggan->alamat3)
+                <button type="button" class="list-group-item list-group-item-action pilih-alamat" data-alamat="{{ $pelanggan->alamat3 }}">
+                    Alamat 3: {{ $pelanggan->alamat3 }}
+                </button>
+              @endif
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 @endsection

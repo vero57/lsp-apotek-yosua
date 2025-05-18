@@ -37,8 +37,12 @@ class CheckoutController extends Controller
             $cartTotal = $cartItems->sum('subtotal');
         }
         $jenisPengiriman = JenisPengiriman::all();
+        $pelanggan = null;
+        if (session('user_id')) {
+            $pelanggan = \App\Models\Pelanggan::find(session('user_id'));
+        }
 
-        return view('fe.checkout', compact('cartItems', 'cartTotal', 'jenisPengiriman'));
+        return view('fe.checkout', compact('pelanggan', 'cartItems', 'cartTotal', 'jenisPengiriman'));
     }
 
     public function pay(Request $request)

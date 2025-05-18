@@ -1,3 +1,5 @@
+@extends('fe.layouts.master')
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,14 +16,20 @@
         // Ambil data pelanggan dari database berdasarkan session user_id
         $pelanggan = \App\Models\Pelanggan::find(session('user_id'));
     @endphp
+            <div class="page-banner-section section" style="background-image: url({{ asset('fe/img/bg/page-banner.jpg') }})">
+            <div class="container">
+                <div class="row">
+                    <!-- Page Title Start -->
+                    <div class="page-title text-center col">
+                        <h1>Status</h1>
+                    </div><!-- Page Title End -->
+                </div>
+            </div>
+        </div><!-- Page Banner Section End-->
 
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-8">
-                <div class="profile-card">
-                    <div class="profile-header">
-                        <h2>Profil Akun</h2>
-                    </div>
                     <form id="formEditProfil" action="{{ route('fe.my_account.update') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="profile-picture-container">
