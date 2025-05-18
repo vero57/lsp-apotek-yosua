@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Penjualan;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class PenjualanController extends Controller
 {
@@ -46,5 +47,19 @@ class PenjualanController extends Controller
         $penjualan->status_order = 'Dibatalkan Penjual';
         $penjualan->save();
         return redirect()->back();
+    }
+
+    public function exportPdf()
+    {
+        $penjualan = \App\Models\Penjualan::with(['metodeBayar', 'pelanggan', 'jenisPengiriman'])->get();
+        $enum = [];
+        $type = \DB::select("SHOW COLUMNS FROM penjualan WHERE Field = 'status_order'")[0]->Type ?? '';
+        if (preg_match('/^enum\((.*)\)$/', $type, $matches)) {
+            $enum = array_map(function($v) {
+                return trim($v, "'");
+            }, explode(',', $matches[1]));
+        }
+        $pdf = PDF::loadView('be.pages.penjualan_pdf', compact('penjualan', 'enum'));
+        return $pdf->download('daftar_penjualan.pdf');
     }
 }

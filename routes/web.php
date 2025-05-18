@@ -171,6 +171,7 @@ Route::post('/midtrans/callback', [CheckoutController::class, 'midtransCallback'
 // Route untuk aksi AJAX
 Route::post('/penjualan/update-status', [\App\Http\Controllers\PenjualanController::class, 'updateStatus'])->name('penjualan.updateStatus');
 Route::post('/penjualan/cancel-order', [\App\Http\Controllers\PenjualanController::class, 'cancelOrder'])->name('penjualan.cancelOrder');
+Route::get('/penjualan/pdf', [\App\Http\Controllers\PenjualanController::class, 'exportPdf'])->name('penjualan.exportPdf');
 
 
 
