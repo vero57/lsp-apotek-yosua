@@ -4,9 +4,6 @@
 <div class="page-content" style="padding: 24px;">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="h5 mb-0">Daftar Penjualan</h2>
-        <a href="{{ route('penjualan.exportPdf') }}" class="btn btn-danger">
-            <i class="fa fa-file-pdf-o"></i> Download PDF
-        </a>
     </div>
     <div class="table-responsive">
         <table class="table table-bordered table-hover mb-0">

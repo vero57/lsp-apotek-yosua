@@ -162,6 +162,12 @@ Route::middleware('admin')->prefix('karyawan')->name('be.karyawan.')->group(func
     Route::get('/jenis-pengiriman', [\App\Http\Controllers\JenisPengirimanController::class, 'index'])->name('jenispengiriman');
 });
 
+// ==================== ROUTE KASIR ====================
+Route::middleware('admin')->prefix('kasir')->name('be.kasir.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\ProductController::class, 'index'])->name('products');
+    Route::get('/penjualan', [\App\Http\Controllers\PenjualanController::class, 'index'])->name('penjualan');
+});
+
 // Route untuk update profil pelanggan
 Route::post('/my-account/update', [MyAccountController::class, 'update'])->middleware('apotek')->name('fe.my_account.update');
 

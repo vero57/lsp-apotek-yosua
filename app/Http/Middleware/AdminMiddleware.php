@@ -63,6 +63,11 @@ class AdminMiddleware
             return redirect()->route('be.admin.index');
         }
 
+        // Kasir hanya boleh akses /kasir (produk) dan /kasir/penjualan (beserta turunannya)
+        if ($user && $user->jabatan === 'kasir' && !preg_match('#^kasir($|/penjualan($|/.*))#', $path)) {
+            return redirect()->route('be.kasir.products');
+        }
+
         return $next($request);
     }
 }

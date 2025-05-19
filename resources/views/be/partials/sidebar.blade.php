@@ -24,6 +24,13 @@
                     <li class="{{ request()->routeIs('be.karyawan.jenispengiriman') ? 'active' : '' }}">
                         <a href="{{ route('be.karyawan.jenispengiriman') }}"><i class="fa fa-truck"></i> <span>Jenis Pengiriman</span></a>
                     </li>
+                @elseif($user && $user->jabatan === 'kasir')
+                    <li class="{{ request()->routeIs('be.kasir.products') ? 'active' : '' }}">
+                        <a href="{{ route('be.kasir.products') }}"><i class="fa fa-medkit"></i> <span>Obat</span></a>
+                    </li>
+                    <li class="{{ request()->routeIs('be.kasir.penjualan') ? 'active' : '' }}">
+                        <a href="{{ route('be.kasir.penjualan') }}"><i class="fa fa-shopping-bag"></i> <span>Penjualan Obat</span></a>
+                    </li>
                 @else
                     <li class="{{ request()->routeIs('be.admin.index') ? 'active' : '' }}">
                         <a href="{{ route('be.admin.index') }}"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>

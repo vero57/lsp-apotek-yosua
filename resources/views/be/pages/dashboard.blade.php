@@ -95,6 +95,11 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="d-flex justify-content-end mt-3">
+                    <a href="{{ route('penjualan.exportPdf') }}" class="btn btn-danger">
+                        <i class="fa fa-file-pdf-o"></i> Download PDF
+                    </a>
+                </div>
             </div>
         </div>
     </div> <!-- end .content -->
