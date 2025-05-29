@@ -40,8 +40,13 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
+
         // Hapus semua keranjang yang terkait produk ini
         \App\Models\Keranjang::where('id_obat', $id)->delete();
+
+        // Hapus semua detail_pembelian yang terkait produk ini
+        \DB::table('detail_pembelian')->where('id_obat', $id)->delete();
+
         $product->delete();
         return redirect()->route('be.admin.products')->with('success', 'Produk berhasil dihapus');
     }

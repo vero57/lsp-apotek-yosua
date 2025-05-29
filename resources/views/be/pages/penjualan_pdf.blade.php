@@ -46,7 +46,7 @@
 <body>
     <div class="kop">
         <div class="title">PT Veni Creator Spiritus</div>
-        <div class="subtitle">Jl. Contoh No. 123, Jakarta, Indonesia</div>
+        <div class="subtitle">Karadenan No. 123, Jakarta, Indonesia</div>
         <div class="alamat">Telp: (021) 12345678 &nbsp; | &nbsp; Email: info@venicreatorspiritus.co.id</div>
         <hr>
         <div style="font-size:1.1em; font-weight:bold; margin-bottom:10px;">Laporan Daftar Penjualan</div>

@@ -85,7 +85,7 @@ Route::middleware('admin')->group(function () {
     Route::get('/admin/products/create-jenis', [\App\Http\Controllers\AddJenisObat::class, 'create'])->name('be.admin.products.createjenis');
     Route::post('/admin/products/store-jenis', [\App\Http\Controllers\AddJenisObat::class, 'store'])->name('be.admin.products.storejenis');
     Route::delete('/admin/products/jenis/{id}', [\App\Http\Controllers\AddJenisObat::class, 'destroy'])->name('be.admin.products.destroyjenis');
-    Route::delete('/admin/products/{id}', [\AppHttp\Controllers\ProductController::class, 'destroy'])->name('be.admin.products.destroy');
+    Route::delete('/admin/products/{id}', [\App\Http\Controllers\ProductController::class, 'destroy'])->name('be.admin.products.destroy');
 
     Route::get('/admin/pelanggan', [\App\Http\Controllers\PagePelangganController::class, 'index'])->name('be.admin.pelanggan');
 
@@ -151,9 +151,7 @@ Route::middleware('admin')->prefix('apotekar')->name('be.apotekar.')->group(func
 
 // ==================== ROUTE PEMILIK ====================
 Route::middleware('admin')->prefix('pemilik')->name('be.pemilik.')->group(function () {
-    Route::get('/', function () {
-        return view('be.pages.dashboard');
-    })->name('index');
+    Route::get('/', [\App\Http\Controllers\AdminController::class, 'index'])->name('index');
 });
 
 // ==================== ROUTE KARYAWAN ====================
