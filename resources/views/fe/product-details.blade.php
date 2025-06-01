@@ -28,7 +28,8 @@
                             @foreach([$product->foto1, $product->foto2, $product->foto3] as $foto)
                                 @if($foto)
                                     <div class="single-thumb">
-                                        <img alt="" src="{{ asset('storage/' . ltrim($foto, '/')) }}"/>
+                                        <img alt="" src="{{ asset('storage/' . ltrim($foto, '/')) }}"
+                                             style="width:100%; aspect-ratio:1/1; height:auto; min-height:220px; max-height:220px; object-fit:cover; border-radius:10px; background:#f8f8f8;"/>
                                     </div>
                                 @endif
                             @endforeach
@@ -38,7 +39,8 @@
                             @foreach([$product->foto1, $product->foto2, $product->foto3] as $foto)
                                 @if($foto)
                                     <div class="single-image">
-                                        <img alt="" src="{{ asset('storage/' . ltrim($foto, '/')) }}"/>
+                                        <img alt="" src="{{ asset('storage/' . ltrim($foto, '/')) }}"
+                                             style="width:100%; aspect-ratio:1/1; height:auto; min-height:350px; max-height:350px; object-fit:cover; border-radius:10px; background:#f8f8f8;"/>
                                     </div>
                                 @endif
                             @endforeach

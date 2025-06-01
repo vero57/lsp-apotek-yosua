@@ -99,13 +99,22 @@ class CheckoutController extends Controller
                     'total_bayar' => $totalPembayaran,
                     'status_order' => 'Menunggu Konfirmasi',
                     'keterangan_status' => 'Pesanan diterima',
-                    'id_jenis_kirim' => $idJenisKirim, // <-- simpan id_jenis_kirim
+                    'id_jenis_kirim' => $idJenisKirim,
                     'id_pelanggan' => $userId,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
+
+                // Kurangi stok produk sesuai jumlah yang dibeli
+                foreach ($cartItems as $item) {
+                    if ($item->obat) {
+                        $item->obat->stok = max(0, $item->obat->stok - $item->jumlah_order);
+                        $item->obat->save();
+                    }
+                }
             }
-            return response()->json(['success' => true]);
+            // Tambahkan redirect ke /status di response
+            return response()->json(['success' => true, 'redirect' => route('fe.status')]);
         }
 
         // Konfigurasi Midtrans

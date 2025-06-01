@@ -260,9 +260,7 @@
 
             var formData = new FormData();
             formData.append('_token', '{{ csrf_token() }}');
-            // Tambahkan id_jenis_kirim ke formData
             formData.append('id_jenis_kirim', $('#select-jenis-pengiriman').val());
-            // Jika ada file resep, tambahkan ke formData
             var resepInput = $('#resep_file')[0];
             if (resepInput && resepInput.files.length > 0) {
                 formData.append('resep_file', resepInput.files[0]);
@@ -290,8 +288,12 @@
                                     data: confirmData,
                                     processData: false,
                                     contentType: false,
-                                    success: function() {
-                                        window.location.reload();
+                                    success: function(res) {
+                                        if(res.redirect) {
+                                            window.location.href = res.redirect;
+                                        } else {
+                                            window.location.href = "{{ route('fe.status') }}";
+                                        }
                                     }
                                 });
                             },
@@ -309,8 +311,12 @@
                                     data: confirmData,
                                     processData: false,
                                     contentType: false,
-                                    success: function() {
-                                        window.location.reload();
+                                    success: function(res) {
+                                        if(res.redirect) {
+                                            window.location.href = res.redirect;
+                                        } else {
+                                            window.location.href = "{{ route('fe.status') }}";
+                                        }
                                     }
                                 });
                             },

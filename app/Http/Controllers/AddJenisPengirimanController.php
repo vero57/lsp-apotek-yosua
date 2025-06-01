@@ -35,4 +35,12 @@ class AddJenisPengirimanController extends Controller
 
         return redirect()->route('be.admin.jenispengiriman')->with('success', 'Jenis Pengiriman berhasil ditambahkan.');
     }
+
+    // Hapus data jenis pengiriman
+    public function destroy($id)
+    {
+        $jenis = \App\Models\JenisPengiriman::findOrFail($id);
+        $jenis->delete();
+        return redirect()->route('be.admin.jenispengiriman')->with('success', 'Jenis Pengiriman berhasil dihapus.');
+    }
 }

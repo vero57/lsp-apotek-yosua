@@ -129,9 +129,6 @@
                             <li class="{{ Request::routeIs('fe.about') ? 'active' : '' }}">
                                 <a href="{{ route('fe.about') }}">About</a>
                             </li>
-                            <li class="{{ Request::routeIs('fe.contact') ? 'active' : '' }}">
-                                <a href="{{ route('fe.contact') }}">contact</a>
-                            </li>
                         </ul>
                     </nav>
                     <!-- Header Search -->
